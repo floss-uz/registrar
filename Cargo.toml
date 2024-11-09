@@ -1,0 +1,23 @@
+
+[workspace]
+resolver = "2"
+members = [ "crates/registrar-bin", "crates/registrar-database","crates/registrar-http", "crates/registrar-templates"]
+
+[workspace.package]
+authors = ["Sokhibjon Orzikulov <sakhib@orzklv.uz>"]
+edition = "2021"
+version = "0.1.0"
+license = "Apache-2.0 OR MIT"
+homepage = "https://github.com/floss-uz/registrar"
+repository = "https://github.com/floss-uz/registrar"
+
+[workspace.dependencies]
+serde = "1"
+tokio = { version = "1.38.0", features = ["macros", "rt-multi-thread"] }
+
+[profile.release]
+codegen-units = 1
+incremental = true
+lto = true
+strip = true
+opt-level = "z"
