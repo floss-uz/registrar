@@ -41,8 +41,7 @@ pkgs.stdenv.mkDerivation {
     with pkgs;
     [
       openssl
-    ]
-    ++ darwinPkgs;
+    ];
 
   # Set Environment Variables
   RUST_BACKTRACE = 1;
@@ -220,8 +219,6 @@ pkgs.stdenv.mkDerivation {
     export DB_USERNAME=floss
     export DB_PASSWORD=floss
     export DB_DATABASE=floss
-
-
 
     createdb $(whoami) --host=$PGDATA
 
