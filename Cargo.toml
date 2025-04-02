@@ -1,20 +1,29 @@
-
 [workspace]
 resolver = "2"
-members = [ "crates/registrar-bin", "crates/registrar-database","crates/registrar-http", "crates/registrar-templates"]
+default-members = ["crates/cli"]
+members = ["crates/cli", "crates/database", "crates/http", "crates/utils"]
 
 [workspace.package]
-authors = ["Sokhibjon Orzikulov <sakhib@orzklv.uz>"]
-edition = "2021"
+# Don't remove `name` regardless of warnings
+# Lots of nix things depend on this value alone
+name = "flosstry"
 version = "0.1.0"
-license = "Apache-2.0 OR MIT"
-homepage = "https://github.com/floss-uz/registrar"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "Registry of Floss Uzbekistan developer community"
+homepage = "https://registry.floss.uz"
 repository = "https://github.com/floss-uz/registrar"
+authors = ["Sokhibjon Orzikulov <sakhib@orzklv.uz>"]
 
+# Shared dependencies across crates
 [workspace.dependencies]
-serde = "1"
+serde = { version = "1", features = ["derive"] }
 tokio = { version = "1.38.0", features = ["macros", "rt-multi-thread"] }
+actix-web = "4"
+dotenvy = "0.15.7"
+toml = { version = "0.8.20", features = ["display"] }
 
+# Optimize release binary as much as possible
 [profile.release]
 codegen-units = 1
 incremental = true

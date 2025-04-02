@@ -1,53 +1,44 @@
 {
-  description = "Registrar for keeping everything in one place";
+  description = "Registry for Floss Uzbekistan developers community";
 
   inputs = {
-    # Too old to work with most libraries
-    # nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
+    # Stable for keeping thins clean
+    # nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
 
-    # Perfect!
+    # Fresh and new for testing
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
 
     # The flake-utils library
     flake-utils.url = "github:numtide/flake-utils";
+
+    # Rust toolchain shit
+    fenix = {
+      url = "github:nix-community/fenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs =
-    { self
-    , nixpkgs
-    , flake-utils
-    , ...
-    }:
-    flake-utils.lib.eachDefaultSystem
-      (
-        system:
-        let
-          pkgs = nixpkgs.legacyPackages.${system};
+  outputs = {
+    self,
+    nixpkgs,
+    flake-utils,
+    fenix,
+    ...
+  } @ inputs:
+    flake-utils.lib.eachDefaultSystem (system: let
+      pkgs = nixpkgs.legacyPackages.${system};
+    in {
+      # Nix script formatter
+      formatter = pkgs.alejandra;
 
-          # Output results
-          binary = pkgs.callPackage ./. { };
-          docker = pkgs.dockerTools.streamLayeredImage {
-            name = "registrar";
-            tag = "latest";
-            contents = [ binary ];
-            config = {
-              Cmd = [ "${binary}/bin/orchestra" ];
-            };
-          };
-        in
-        {
-          # Nix script formatter
-          formatter = pkgs.nixpkgs-fmt;
+      # Development environment
+      devShells.default = import ./shell.nix {inherit pkgs fenix;};
 
-          # Development environment
-          devShells.default = import ./shell.nix { inherit pkgs; };
-
-          # Output package
-          packages.default = pkgs.callPackage ./. { };
-        }
-      )
+      # Output package
+      packages.default = pkgs.callPackage ./. {inherit pkgs fenix;};
+    })
     // {
-      # Overlay module
-      # nixosModules.xnux.bot = import ./module.nix self;
+      # NixOS module (deployment)
+      nixosModules.server = import ./module.nix self;
     };
 }
