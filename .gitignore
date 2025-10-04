@@ -1,17 +1,21 @@
-# Nix builds
-/result
+dist-newstyle
 
-# Cargo builds
-/target
+*.aux
+*.hp
+*.pdf
+*.ps
+*.eventlog
+*.eventlog.html
 
-# Environmental variables
 .env
 
-# Production config file
-config.toml
+data
+*~
+~*
+/result
+/.direnv
 
-# Shell temporary files
-.nix-shell
-
-# Postgresql logfiles
-logfile
+_cache
+_site
+data
+target

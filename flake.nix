@@ -1,44 +1,55 @@
 {
-  description = "Registry for Floss Uzbekistan developers community";
+  description = "registrar";
 
   inputs = {
-    # Stable for keeping thins clean
-    # nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
-
-    # Fresh and new for testing
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-
-    # The flake-utils library
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-
-    # Rust toolchain shit
-    fenix = {
-      url = "github:nix-community/fenix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    flake-utils,
-    fenix,
-    ...
-  } @ inputs:
-    flake-utils.lib.eachDefaultSystem (system: let
-      pkgs = nixpkgs.legacyPackages.${system};
-    in {
-      # Nix script formatter
-      formatter = pkgs.alejandra;
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
+      let
+        pkgs = import nixpkgs { localSystem = { inherit system; }; };
+        hlib = pkgs.haskell.lib;
+        hpkgs = pkgs.haskell.packages."ghc912".override {
+          overrides = self: super: {
+            tasty-wai = hlib.dontCheck (hlib.doJailbreak super.tasty-wai);
+            servant-client = hlib.dontCheck (hlib.doJailbreak super.servant-client);
+            esqueleto = hlib.dontCheck (hlib.doJailbreak super.esqueleto);
+          };
+        };
 
-      # Development environment
-      devShells.default = import ./shell.nix {inherit pkgs fenix;};
+        registrar = pkgs.haskell.lib.overrideCabal (hpkgs.callCabal2nix "registrar" ./. { }) (old: {
+          doCheck = true;
+          doHaddock = false;
+          enableLibraryProfiling = false;
+          enableExecutableProfiling = false;
+        });
+      in
+      {
+        packages.default = registrar;
 
-      # Output package
-      packages.default = pkgs.callPackage ./. {inherit pkgs fenix;};
-    })
-    // {
-      # NixOS module (deployment)
-      nixosModules.server = import ./module.nix self;
-    };
+        devShells.default = pkgs.mkShell {
+          buildInputs = [
+            hpkgs.cabal-install
+            hpkgs.cabal-add
+            hpkgs.haskell-language-server
+            hpkgs.fourmolu
+            hpkgs.hlint
+            hpkgs.hpack
+            
+            pkgs.just
+            pkgs.alejandra
+            pkgs.zlib
+          ];
+        };
+      }
+    );
 }
+
