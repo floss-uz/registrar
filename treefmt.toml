@@ -11,6 +11,8 @@ excludes = []
 includes = ["*.cabal"]
 options = ["-i"]
 
+# TODO: Need configure alejandra as nix formatter
+
 # [formatter.nixfmt-rfc-style]
 # command = "nixfmt"
 # excludes = []
