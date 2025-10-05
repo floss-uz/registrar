@@ -19,3 +19,5 @@ _cache
 _site
 data
 target
+
+.pre-commit-config.yaml

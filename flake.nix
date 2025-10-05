@@ -4,6 +4,9 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
+    pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs";
+    treefmt-nix.url = "github:numtide/treefmt-nix";
   };
 
   outputs =
@@ -11,6 +14,8 @@
       self,
       nixpkgs,
       flake-utils,
+      pre-commit-hooks,
+      treefmt-nix
     }:
     flake-utils.lib.eachDefaultSystem (
       system:
@@ -32,6 +37,11 @@
           enableLibraryProfiling = false;
           enableExecutableProfiling = false;
         });
+
+        precommit = pre-commit-hooks.lib.${system}.run {
+          src = ./.;
+          hooks.treefmt.enable = true;
+        };
       in
       {
         packages.default = registrar;
@@ -48,9 +58,13 @@
             pkgs.just
             pkgs.alejandra
             pkgs.zlib
+            pkgs.treefmt
           ];
+
+          shellHook = ''
+            ${precommit.shellHook}
+          '';
         };
       }
     );
 }
-
