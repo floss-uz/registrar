@@ -3,24 +3,40 @@ name:            registrar
 version:         0.1.0.0
 license:         BSD-3-Clause
 license-file:    LICENSE
-author:          lambdajon
 maintainer:      lambdajon42@gmail.com
+author:          lambdajon
 category:        Network
 build-type:      Simple
 extra-doc-files: CHANGELOG.md
 
-common warnings
-  ghc-options: -Wall
-
 library
-  import:             warnings
-  exposed-modules:    App
+  exposed-modules:
+    App
+    CLI
+
+  hs-source-dirs:     src
+  default-language:   GHC2024
+  default-extensions:
+    BlockArguments
+    DataKinds
+    DeriveAnyClass
+    DeriveGeneric
+    DerivingStrategies
+    ImportQualifiedPost
+    LambdaCase
+    OverloadedRecordDot
+    OverloadedStrings
+    RecordWildCards
+    TypeOperators
+
+  ghc-options:        -Wall
   build-depends:
     , aeson
     , async
     , base
     , containers
     , log-base
+    , optparse-generic
     , servant
     , servant-server
     , stm
@@ -28,36 +44,22 @@ library
     , text
     , unordered-containers
 
-  hs-source-dirs:     src
-  default-language:   GHC2024
-  default-extensions:
-    BlockArguments
-    DeriveAnyClass
-    DerivingStrategies
-    ImportQualifiedPost
-    LambdaCase
-    OverloadedRecordDot
-    OverloadedStrings
-    RecordWildCards
-
 executable registrar
-  import:           warnings
   main-is:          Main.hs
+  hs-source-dirs:   app
+  default-language: GHC2024
+  ghc-options:      -Wall -Wall -O2 -threaded -rtsopts -with-rtsopts=-N
   build-depends:
     , base
     , registrar
     , telegram-bot-api
 
-  hs-source-dirs:   app
-  ghc-options:      -Wall -O2 -threaded -rtsopts -with-rtsopts=-N
-  default-language: GHC2024
-
 test-suite registrar-test
-  import:           warnings
-  default-language: GHC2024
   type:             exitcode-stdio-1.0
-  hs-source-dirs:   test
   main-is:          Main.hs
+  hs-source-dirs:   test
+  default-language: GHC2024
+  ghc-options:      -Wall
   build-depends:
     , base
     , registrar
