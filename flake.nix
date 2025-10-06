@@ -28,6 +28,7 @@
             tasty-wai = hlib.dontCheck (hlib.doJailbreak super.tasty-wai);
             servant-client = hlib.dontCheck (hlib.doJailbreak super.servant-client);
             esqueleto = hlib.dontCheck (hlib.doJailbreak super.esqueleto);
+            optparse-generic = hlib.dontCheck (hlib.doJailbreak super.optparse-generic);
           };
         };
 
