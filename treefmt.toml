@@ -13,8 +13,8 @@ options = ["-i"]
 
 # TODO: Need configure alejandra as nix formatter
 
-# [formatter.nixfmt-rfc-style]
-# command = "nixfmt"
-# excludes = []
-# includes = ["*.nix"]
-# options = []
+[formatter.alejandra]
+command = "alejandra"
+excludes = []
+includes = ["*.nix"]
+options = []
