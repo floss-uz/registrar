@@ -35,6 +35,7 @@ pkgs.stdenv.mkDerivation {
     pkgs.just
     pkgs.alejandra
     pkgs.zlib
+    pkgs.treefmt
     pre-commit-check.enabledPackages
   ];
   # Things to run before entering devShell
