@@ -45,7 +45,7 @@
             src = ./.;
             hooks = {
               statix.enable = true;
-              alejandra.enable = true;
+              treefmt.enable = true;
 
               # When things get nasty
               #flake-checker.enable = true;
