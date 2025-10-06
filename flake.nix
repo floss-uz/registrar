@@ -4,7 +4,12 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    
+
+    # Git hooks
+    pre-commit-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -14,10 +19,9 @@
     pre-commit-hooks,
   }:
     flake-utils.lib.eachDefaultSystem (
-      system:
-      let
-        nix-pre-commit-hooks = import (builtins.fetchTarball "https://github.com/cachix/git-hooks.nix/tarball/master");
-        pkgs = import nixpkgs { localSystem = { inherit system; }; };
+      system: let
+        inherit (self.checks.${system}) pre-commit-check;
+        pkgs = import nixpkgs {localSystem = {inherit system;};};
         hlib = pkgs.haskell.lib;
         hpkgs = pkgs.haskell.packages."ghc912".override {
           overrides = self: super: {
@@ -34,44 +38,24 @@
           enableLibraryProfiling = false;
           enableExecutableProfiling = false;
         });
+      in {
+        # Tests and suites for this repo
+        checks = {
+          pre-commit-check = pre-commit-hooks.lib.${system}.run {
+            src = ./.;
+            hooks = {
+              statix.enable = true;
+              treefmt.enable = true;
 
-        pre-commit-check = nix-pre-commit-hooks.run {
-          src = ./.;
-          # If your hooks are intrusive, avoid running on each commit with a default_states like this:
-          # default_stages = ["manual" "pre-push"];
-          hooks = {
-
-            # override a package with a different version
-            fourmolu.enable = true;
-            fourmolu.package = hpkgs.fourmolu;
-            fourmolu.settings.defaultExtensions = [ "lhs" "hs" ];
-
+              # When things get nasty
+              #flake-checker.enable = true;
+            };
           };
         };
-      in
-      {
+
         packages.default = registrar;
 
-        devShells.default = pkgs.mkShell {
-          buildInputs = [
-            hpkgs.cabal-install
-            hpkgs.cabal-add
-            hpkgs.haskell-language-server
-            hpkgs.fourmolu
-            hpkgs.hlint
-            hpkgs.hpack
-            
-            pkgs.just
-            pkgs.alejandra
-            pkgs.zlib
-          ];
-
-          shellHook = ''
-            ${pre-commit-check.shellHook}
-          '';
-        };
-
-        
+        devShells.default = pkgs.callPackage ./shell.nix {inherit pkgs hpkgs pre-commit-hooks pre-commit-check;};
       }
     );
 }
