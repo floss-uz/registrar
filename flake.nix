@@ -29,6 +29,7 @@
             servant-client = hlib.dontCheck (hlib.doJailbreak super.servant-client);
             esqueleto = hlib.dontCheck (hlib.doJailbreak super.esqueleto);
             optparse-generic = hlib.dontCheck (hlib.doJailbreak super.optparse-generic);
+            postgresql-simple = hlib.dontCheck (hlib.doJailbreak super.postgresql-simple);
           };
         };
 

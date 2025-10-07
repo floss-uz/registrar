@@ -14,18 +14,30 @@ common warnings
 
 library
   import:             warnings
-  exposed-modules:    App
+  exposed-modules:
+    Registrar
+    Registrar.Database
+    Registrar.Database.Migrations
+
   build-depends:
     , aeson
     , async
     , base
+    , bytestring
     , containers
     , log-base
+    , monad-logger
+    , mtl
+    , persistent
+    , persistent-migration
+    , persistent-postgresql
+    , resource-pool
     , servant
     , servant-server
     , stm
     , strict-containers
     , text
+    , transformers
     , unordered-containers
 
   hs-source-dirs:     src
@@ -34,6 +46,7 @@ library
     BlockArguments
     DeriveAnyClass
     DerivingStrategies
+    ImplicitParams
     ImportQualifiedPost
     LambdaCase
     OverloadedRecordDot
@@ -45,6 +58,7 @@ executable registrar
   main-is:          Main.hs
   build-depends:
     , base
+    , bytestring
     , registrar
     , telegram-bot-api
 

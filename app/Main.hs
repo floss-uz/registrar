@@ -1,6 +1,6 @@
 module Main where
 
-import App
+import Registrar
 
 main :: IO ()
 main = do

@@ -31,15 +31,25 @@ pkgs.stdenv.mkDerivation {
     hpkgs.fourmolu
     hpkgs.hlint
     hpkgs.hpack
+    # hpkgs.libpq
+    hpkgs.postgresql-libpq
+    hpkgs.postgresql-libpq-configure
 
     pkgs.just
     pkgs.alejandra
     pkgs.zlib
     pkgs.treefmt
+    pkgs.libpq.dev
+    pkgs.zlib.dev
+    pkgs.postgresql
+    pkgs.libz
+    pkgs.libpq.pg_config
+    pkgs.pkg-config
     pre-commit-check.enabledPackages
   ];
   # Things to run before entering devShell
   shellHook = ''
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${pkgs.postgresql}/lib
     ${pre-commit-check.shellHook}
   '';
 
