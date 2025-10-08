@@ -24,7 +24,7 @@ deriving stock instance Show (Options Unwrapped)
 
 runApp :: IO ()
 runApp = do
-  (op :: Options Unwrapped) <- unwrapRecord ""
+  (op :: Options Unwrapped) <- unwrapRecord "Registrar application"
   print op
   pool <- runNoLoggingT $ createPostgresqlPool op.database op.databasePoolSize
   let ?pool = pool
