@@ -10,10 +10,7 @@ build-type:      Simple
 extra-doc-files: CHANGELOG.md
 
 library
-  exposed-modules:
-    App
-    CLI
-
+  exposed-modules:    Registrar
   hs-source-dirs:     src
   default-language:   GHC2024
   default-extensions:
@@ -34,6 +31,7 @@ library
     , aeson
     , async
     , base
+    , bytestring
     , containers
     , log-base
     , optparse-generic
@@ -52,7 +50,6 @@ executable registrar
   build-depends:
     , base
     , registrar
-    , telegram-bot-api
 
 test-suite registrar-test
   type:             exitcode-stdio-1.0
