@@ -28,6 +28,7 @@ library
     , log-base
     , monad-logger
     , mtl
+    , optparse-generic
     , persistent
     , persistent-migration
     , persistent-postgresql

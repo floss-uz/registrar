@@ -26,7 +26,3 @@ withPool = withResource ?pool . runReaderT
 migrateDb :: (PoolSql) => IO ()
 migrateDb =
   withPool $ runMigration defaultSettings allMigrations
-
--- pure ()
--- fails if persistent detects more migrations not accounted for
--- checkMigration migrationDef

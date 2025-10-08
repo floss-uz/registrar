@@ -6,18 +6,26 @@ import Registrar.Database
 
 import Control.Monad.Logger (NoLoggingT (runNoLoggingT))
 import Data.ByteString qualified as B
-import Data.ByteString.Char8 qualified as BC
+import Data.Kind (Type)
 import Database.Persist.Postgresql (createPostgresqlPool)
+import Options.Generic
 
-dbCreds :: (B.ByteString, Int)
-dbCreds = (url, 10)
- where
-  url = BC.pack "postgresql://localhost/jasliq?user=postgres&password=postgres"
+type Options :: Type -> Type
+data Options w = Options
+  { port :: !(w ::: Int <?> "Port to listen on" <!> "9060" <#> "p")
+  , database :: !(w ::: B.ByteString <?> "Database connection string" <#> "u")
+  , databasePoolSize :: !(w ::: Int <?> "Database pool size" <!> "10" <#> "s")
+  , migrations :: !(w ::: Bool <?> "Run migrations" <!> "False" <#> "m")
+  }
+  deriving stock (Generic)
+
+deriving anyclass instance ParseRecord (Options Wrapped)
+deriving stock instance Show (Options Unwrapped)
 
 runApp :: IO ()
 runApp = do
-  pool <- runNoLoggingT $ createPostgresqlPool (fst dbCreds) (snd dbCreds)
+  (op :: Options Unwrapped) <- unwrapRecord ""
+  print op
+  pool <- runNoLoggingT $ createPostgresqlPool op.database op.databasePoolSize
   let ?pool = pool
   migrateDb
-
--- print "running"
