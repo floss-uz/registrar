@@ -31,7 +31,7 @@ pkgs.stdenv.mkDerivation {
     hpkgs.fourmolu
     hpkgs.hlint
     hpkgs.hpack
-    # hpkgs.libpq
+    hpkgs.libpq
     hpkgs.postgresql-libpq
     hpkgs.postgresql-libpq-configure
 
