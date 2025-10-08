@@ -15,8 +15,6 @@ import Data.Pool (Pool, withResource)
 import Database.Persist.SqlBackend (SqlBackend)
 import GHC.Generics
 
--- import Database.Esqueleto.Experimental
-
 type PoolSql :: Constraint
 type PoolSql = (?pool :: Pool SqlBackend)
 
