@@ -10,23 +10,11 @@ build-type:      Simple
 extra-doc-files: CHANGELOG.md
 
 library
-  exposed-modules:    Registrar
-  hs-source-dirs:     src
-  default-language:   GHC2024
-  default-extensions:
-    BlockArguments
-    DataKinds
-    DeriveAnyClass
-    DeriveGeneric
-    DerivingStrategies
-    ImportQualifiedPost
-    LambdaCase
-    OverloadedRecordDot
-    OverloadedStrings
-    RecordWildCards
-    TypeOperators
+  exposed-modules:
+    Registrar
+    Registrar.Database
+    Registrar.Database.Migrations
 
-  ghc-options:        -Wall
   build-depends:
     , aeson
     , async
@@ -34,13 +22,33 @@ library
     , bytestring
     , containers
     , log-base
+    , monad-logger
+    , mtl
     , optparse-generic
+    , persistent
+    , persistent-migration
+    , persistent-postgresql
+    , resource-pool
     , servant
     , servant-server
     , stm
     , strict-containers
     , text
+    , transformers
     , unordered-containers
+
+  hs-source-dirs:     src
+  default-language:   GHC2024
+  default-extensions:
+    BlockArguments
+    DeriveAnyClass
+    DerivingStrategies
+    ImplicitParams
+    ImportQualifiedPost
+    LambdaCase
+    OverloadedRecordDot
+    OverloadedStrings
+    RecordWildCards
 
 executable registrar
   main-is:          Main.hs
@@ -49,6 +57,7 @@ executable registrar
   ghc-options:      -Wall -Wall -O2 -threaded -rtsopts -with-rtsopts=-N
   build-depends:
     , base
+    , bytestring
     , registrar
 
 test-suite registrar-test
