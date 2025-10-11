@@ -16,6 +16,7 @@ data Options w = Options
   , database :: !(w ::: B.ByteString <?> "Database connection string" <#> "d")
   , databasePoolSize :: !(w ::: Int <?> "Database pool size" <!> "10" <#> "s")
   , migrations :: !(w ::: Bool <?> "Run migrations" <!> "False" <#> "m")
+  , datasetFolder :: !(w ::: FilePath <?> "Default dataset folder" <#> "f")
   }
   deriving stock (Generic)
 
@@ -29,3 +30,4 @@ runApp = do
   pool <- runNoLoggingT $ createPostgresqlPool op.database op.databasePoolSize
   let ?pool = pool
   migrateDb
+  importFromDataset op.defaultDataFolder
