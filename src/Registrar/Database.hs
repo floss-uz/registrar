@@ -68,6 +68,7 @@ deriving stock instance Generic Community
 deriving anyclass instance ToJSON Community
 deriving anyclass instance FromJSON Community
 
+-- | Connection pool using for sql database operations
 withPool :: (?pool :: Pool s) => ReaderT s IO r -> IO r
 withPool = withResource ?pool . runReaderT
 
