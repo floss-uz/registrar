@@ -30,4 +30,4 @@ runApp = do
   pool <- runNoLoggingT $ createPostgresqlPool op.database op.databasePoolSize
   let ?pool = pool
   migrateDb
-  importFromDataset op.defaultDataFolder
+  importFromDataset op.datasetFolder
