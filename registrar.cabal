@@ -21,6 +21,7 @@ library
     , base
     , bytestring
     , containers
+    , esqueleto
     , log-base
     , monad-logger
     , mtl
