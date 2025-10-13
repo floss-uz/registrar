@@ -32,5 +32,5 @@ runApp = do
   pool <- runNoLoggingT $ createPostgresqlPool op.database op.databasePoolSize
   let ?pool = pool
   migrateDb
-  -- importFromDataset op.datasetFolder
+  importFromDataset op.datasetFolder
   WP.run op.port runApi
