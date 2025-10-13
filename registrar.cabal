@@ -12,6 +12,7 @@ extra-doc-files: CHANGELOG.md
 library
   exposed-modules:
     Registrar
+    Registrar.API
     Registrar.Database
     Registrar.Database.Migrations
 
@@ -36,12 +37,15 @@ library
     , strict-containers
     , text
     , transformers
+    , unliftio
     , unordered-containers
+    , warp
 
   hs-source-dirs:     src
   default-language:   GHC2024
   default-extensions:
     BlockArguments
+    DataKinds
     DeriveAnyClass
     DerivingStrategies
     ImplicitParams

@@ -6,6 +6,7 @@
 
 module Registrar.Database
   ( migrateDb
+  , communityList
   , Community (..)
   , CommunityId (..)
   , PoolSql (..)
@@ -24,7 +25,7 @@ import Data.ByteString.Lazy qualified as B
 import Data.Kind (Constraint, Type)
 import Data.Pool (Pool, withResource)
 import Database.Persist.SqlBackend (SqlBackend)
-import GHC.Generics
+import GHC.Generics (Generic)
 
 import Data.Aeson hiding (Key)
 
@@ -83,3 +84,6 @@ importFromDataset bp =
         createDatasetFromFile (type Community) (bp <> "/communities.json")
     )
     ?pool
+
+communityList :: (PoolSql) => IO [Community]
+communityList = map entityVal <$> withPool (select $ from table)

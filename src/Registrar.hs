@@ -2,12 +2,14 @@ module Registrar
   ( runApp
   ) where
 
+import Registrar.API (runApi)
 import Registrar.Database
 
 import Control.Monad.Logger (NoLoggingT (runNoLoggingT))
 import Data.ByteString qualified as B
 import Data.Kind (Type)
 import Database.Persist.Postgresql (createPostgresqlPool)
+import Network.Wai.Handler.Warp qualified as WP
 import Options.Generic
 
 type Options :: Type -> Type
@@ -30,4 +32,5 @@ runApp = do
   pool <- runNoLoggingT $ createPostgresqlPool op.database op.databasePoolSize
   let ?pool = pool
   migrateDb
-  importFromDataset op.datasetFolder
+  -- importFromDataset op.datasetFolder
+  WP.run op.port runApi
