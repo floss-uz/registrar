@@ -30,6 +30,7 @@
             esqueleto = hlib.dontCheck (hlib.doJailbreak super.esqueleto);
             optparse-generic = hlib.dontCheck (hlib.doJailbreak super.optparse-generic);
             postgresql-simple = hlib.dontCheck (hlib.doJailbreak super.postgresql-simple);
+            strict-container = hlib.dontCheck (hlib.doJailbreak super.strict-container);
           };
         };
 
