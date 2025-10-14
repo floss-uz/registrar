@@ -1,0 +1,15 @@
+name: Build Stage
+
+on: [push, pull_request]
+
+jobs:
+  test-build:
+    runs-on: self-hosted
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Build nix package
+        run: nix build . --show-trace
+
