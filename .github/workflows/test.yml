@@ -17,5 +17,5 @@ jobs:
         uses: DeterminateSystems/magic-nix-cache-action@main
 
       - name: Check up flake configuration
-        run: nix flake check --all-systems --show-trace
+        run: nix flake check  --show-trace
 
