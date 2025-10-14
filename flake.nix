@@ -4,7 +4,6 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-
     # Git hooks
     pre-commit-hooks = {
       url = "github:cachix/git-hooks.nix";
@@ -17,8 +16,9 @@
     nixpkgs,
     flake-utils,
     pre-commit-hooks,
+    # system,
   }:
-    flake-utils.lib.eachDefaultSystem (
+    flake-utils.lib.eachSystem ["x86_64-linux" "aarch64-linux" "aarch64-darwin"] (
       system: let
         inherit (self.checks.${system}) pre-commit-check;
         pkgs = import nixpkgs {localSystem = {inherit system;};};
