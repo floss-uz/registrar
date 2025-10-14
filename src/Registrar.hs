@@ -34,3 +34,4 @@ runApp = do
   migrateDb
   importFromDataset op.datasetFolder
   WP.run op.port runApi
+  print "Goodbye!"
