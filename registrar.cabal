@@ -13,8 +13,16 @@ library
   exposed-modules:
     Registrar
     Registrar.API
+    Registrar.Bot
+    Registrar.Bot.Handler
+    Registrar.Bot.Parse
+    Registrar.Bot.Reply
+    Registrar.Bot.State
+    Registrar.Bot.Types
+    Registrar.Bot.Webhook
     Registrar.Database
     Registrar.Database.Migrations
+    Registrar.State
 
   build-depends:
     , aeson
@@ -35,6 +43,8 @@ library
     , servant-server
     , stm
     , strict-containers
+    , telegram-bot-api
+    , telegram-bot-simple
     , text
     , transformers
     , unliftio

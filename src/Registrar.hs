@@ -11,6 +11,7 @@ import Data.Kind (Type)
 import Database.Persist.Postgresql (createPostgresqlPool)
 import Network.Wai.Handler.Warp qualified as WP
 import Options.Generic
+import Registrar.State
 
 type Options :: Type -> Type
 data Options w = Options
@@ -19,6 +20,7 @@ data Options w = Options
   , databasePoolSize :: !(w ::: Int <?> "Database pool size" <!> "10" <#> "s")
   , migrations :: !(w ::: Bool <?> "Run migrations" <!> "False" <#> "m")
   , datasetFolder :: !(w ::: FilePath <?> "Default dataset folder" <#> "f")
+  , botToken :: !(w ::: String <?> "Telegram bot token" <#> "t")
   }
   deriving stock (Generic)
 
@@ -32,5 +34,7 @@ runApp = do
   pool <- runNoLoggingT $ createPostgresqlPool op.database op.databasePoolSize
   let ?pool = pool
   migrateDb
-  importFromDataset op.datasetFolder
-  WP.run op.port runApi
+  -- importFromDataset op.datasetFolder
+  st <- newAppState Settings{botName = "floss bot", botToken = op.botToken}
+  print st.botSettings
+  WP.run op.port $ runApi st
