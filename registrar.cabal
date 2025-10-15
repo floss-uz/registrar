@@ -22,6 +22,7 @@ library
     Registrar.Bot.Webhook
     Registrar.Database
     Registrar.Database.Migrations
+    Registrar.Prelude
     Registrar.State
 
   build-depends:
