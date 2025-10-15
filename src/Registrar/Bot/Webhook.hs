@@ -13,6 +13,7 @@ import Registrar.Bot.State (BotState (..), Model (..))
 import Telegram.Bot.API
 import Telegram.Bot.Simple
 import Telegram.Bot.Simple.BotApp.Internal
+import Control.Monad.IO.Class (liftIO)
 
 webhookHandler :: BotState -> Update -> IO ()
 webhookHandler st update = do

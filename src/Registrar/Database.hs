@@ -28,6 +28,7 @@ import Database.Persist.TH
 import Control.Monad.Reader (ReaderT)
 import Control.Monad (forM_)
 import Control.Monad.Trans.Reader (runReaderT)
+import Control.Monad.IO.Class (liftIO)
 
 type PoolSql :: Constraint
 type PoolSql = (?pool :: Pool SqlBackend)

@@ -1,13 +1,15 @@
 module Registrar.Bot.Reply where
 
+import Prelude hiding (unlines)
+import Data.Text (unlines)
 import Registrar.Prelude
 
 import Control.Concurrent.STM (readTVarIO)
-import Data.Text qualified as Text
 import Registrar.Bot.State (BotState (..))
 import Registrar.Bot.Types (Community (..))
 import Telegram.Bot.API
 import Telegram.Bot.Simple
+import Control.Monad.IO.Class (liftIO)
 
 replyStart :: BotM ()
 replyStart = do
@@ -44,14 +46,14 @@ data ReplyAnswerType
   = ReplyStart
   | ReplyShowGroups
 
-replyAnswer :: ReplyAnswerType -> Text.Text
+replyAnswer :: ReplyAnswerType -> Text
 replyAnswer = \case
   ReplyStart ->
-    Text.unlines
+    unlines
       [ "Assalomu alaykum, hurmatli haker! "
       , "Floss jamiyati haqida hammasi shu yerda"
       ]
   ReplyShowGroups ->
-    Text.unlines
+    unlines
       [ "Floss hamjamiyatiga doir barcha guruhlar shu yerda joylashgan" -- TODO: Need correct reply text content, use multiline strings
       ]

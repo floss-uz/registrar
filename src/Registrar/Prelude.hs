@@ -1,13 +1,15 @@
 module Registrar.Prelude
   ( Text
+  , Constraint
+  , Type
   , Generic
-  , module Data.Aeson
-  , module Control.Monad.IO.Class
-  , module Data.Kind
+  , MonadIO
+  , FromJSON
+  , ToJSON
   ) where
 
 import Data.Text (Text)
 import GHC.Generics (Generic)
 import Data.Aeson (FromJSON, ToJSON)
-import Control.Monad.IO.Class (MonadIO (..))
+import Control.Monad.IO.Class (MonadIO)
 import Data.Kind (Type, Constraint)
