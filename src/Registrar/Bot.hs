@@ -32,6 +32,7 @@ regulatorBot st =
 bot :: Model -> BotApp (HM.HashMap (Maybe ChatId) Model) (Maybe ChatId, Action)
 bot st = conversationBot updateChatId (regulatorBot st)
 
+-- | Copy from 'Telegram.Bot.Simple.BotApp'.
 startBotEnv :: BotApp model action -> ClientEnv -> IO (BotEnv model action)
 startBotEnv bot env = do
   botEnv <- defaultBotEnv bot env
