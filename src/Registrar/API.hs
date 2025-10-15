@@ -3,7 +3,7 @@
 
 module Registrar.API (runApi) where
 
-import Registrar.Database
+import Registrar.Database (Community, PoolSql)
 import Registrar.Database qualified as DB
 
 import Registrar.Bot.Webhook qualified as BotAPI
@@ -16,14 +16,14 @@ import Servant.API
 import Servant.API.Generic
 import Servant.Server.Generic (AsServerT, genericServeT)
 
-import Registrar.Bot.State (BotState)
-import Registrar.State (AppState)
+import Registrar.Bot.State (BotState (..), Model (..))
+import Telegram.Bot.API
 import UnliftIO (MonadIO (..))
 
 type API :: Type -> Type
 data API route = MkAPI
   { communities :: route :- "communities" :> NamedRoutes CommunityRoutes
-  , webhook :: route :- "webhook" :> BotAPI.WebhookAPI
+  , webhook :: route :- "webhook" :> ReqBody '[JSON] Update :> Post '[JSON] ()
   }
   deriving stock (Generic)
 
@@ -39,12 +39,12 @@ communityHandlers =
     { _communities = DB.communityList
     }
 
-apiHandler :: (PoolSql) => (AppState) -> API (AsServerT IO)
+apiHandler :: (PoolSql) => BotState -> API (AsServerT IO)
 apiHandler st =
   MkAPI
     { communities = communityHandlers
-    -- , webhook = BotAPI.app $ undefined undefined
+    , webhook = BotAPI.webhookHandler st
     }
 
-runApi :: (PoolSql) => AppState -> Application
+runApi :: (PoolSql) => BotState -> Application
 runApi st = genericServeT liftIO $ apiHandler st

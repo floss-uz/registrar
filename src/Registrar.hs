@@ -8,10 +8,11 @@ import Registrar.Database
 import Control.Monad.Logger (NoLoggingT (runNoLoggingT))
 import Data.ByteString qualified as B
 import Data.Kind (Type)
+import Data.Text qualified as T
 import Database.Persist.Postgresql (createPostgresqlPool)
 import Network.Wai.Handler.Warp qualified as WP
 import Options.Generic
-import Registrar.State
+import Registrar.Bot.State
 
 type Options :: Type -> Type
 data Options w = Options
@@ -30,11 +31,9 @@ deriving stock instance Show (Options Unwrapped)
 runApp :: IO ()
 runApp = do
   (op :: Options Unwrapped) <- unwrapRecord "Registrar application"
-  print op
   pool <- runNoLoggingT $ createPostgresqlPool op.database op.databasePoolSize
   let ?pool = pool
   migrateDb
-  -- importFromDataset op.datasetFolder
-  st <- newAppState Settings{botName = "floss bot", botToken = op.botToken}
-  print st.botSettings
+  importFromDataset op.datasetFolder
+  st <- newBotState Settings{botName = "floss bot", botToken = T.pack op.botToken, debugEnabled = True}
   WP.run op.port $ runApi st

@@ -31,6 +31,7 @@ library
     , bytestring
     , containers
     , esqueleto
+    , http-types
     , log-base
     , monad-logger
     , mtl
@@ -40,15 +41,16 @@ library
     , persistent-postgresql
     , resource-pool
     , servant
+    , servant-client
     , servant-server
     , stm
-    , strict-containers
     , telegram-bot-api
     , telegram-bot-simple
     , text
     , transformers
     , unliftio
     , unordered-containers
+    , wai
     , warp
 
   hs-source-dirs:     src

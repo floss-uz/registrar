@@ -1,19 +1,21 @@
 module Registrar.Bot
   ( regulatorBot
+  , bot
+  , startBotEnv
   ) where
 
 import Data.Text qualified as T
 
 import Data.Aeson (decode)
-import Data.ByteString.Lazy qualified as B
 import Data.HashMap.Strict qualified as HM
-import Network.Wai.Handler.Warp
 import Registrar.Bot.Handler
 import Registrar.Bot.Parse
 import Registrar.Bot.State
 import Registrar.Bot.Types
+import Servant.Client
 import Telegram.Bot.API
 import Telegram.Bot.Simple
+import Telegram.Bot.Simple.BotApp.Internal
 
 regulatorBot :: Model -> BotApp Model Action
 regulatorBot st =
@@ -29,9 +31,9 @@ regulatorBot st =
 bot :: Model -> BotApp (HM.HashMap (Maybe ChatId) Model) (Maybe ChatId, Action)
 bot st = conversationBot updateChatId (regulatorBot st)
 
--- runBot :: String -> IO ()
--- runBot botToken = do
---   st <- newBotState Settings{botName = "floss bot", botToken}
-
---   print "Floss regulator bot ready for run"
---   where
+startBotEnv :: BotApp model action -> ClientEnv -> IO (BotEnv model action)
+startBotEnv bot env = do
+  botEnv <- defaultBotEnv bot env
+  _jobThreadIds <- scheduleBotJobs botEnv (botJobs bot)
+  _actionsThreadId <- processActionsIndefinitely bot botEnv
+  return botEnv

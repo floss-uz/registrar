@@ -6,32 +6,33 @@ import Data.Text qualified as T
 import System.Environment (getEnv)
 
 import Data.HashMap.Strict qualified as HM
+import GHC.Generics (Generic)
 import Registrar.Bot.Types (Community)
+import Servant.Client (ClientEnv)
+import Telegram.Bot.API (Token (..), defaultTelegramClientEnv)
 
 type Model = BotState
 
 data BotState = BotState
   { botSettings :: !Settings
-  , rfc :: TVar (HashMap T.Text T.Text)
+  -- ^ Bot settings
+  , clientEnv :: ClientEnv
+  -- ^ Botenv
   , communities :: TVar [Community]
   }
 
 data Settings = Settings
-  { botName :: !T.Text
-  , botToken :: !String
+  { botName :: T.Text
+  -- ^ Telegram bot name. Used to parse @/command\@botname@.
+  , botToken :: T.Text
+  -- ^ Bot token.
+  , debugEnabled :: Bool
+  -- ^ Whether debug enabled or not
   }
-  deriving (Show)
+  deriving (Generic, Show)
 
 newBotState :: Settings -> IO BotState
-newBotState botSettings = do
+newBotState settings = do
   communities <- newTVarIO []
-  rfc <- newTVarIO HM.empty
-  return BotState{botSettings, ..}
-
-loadDefaultSettings :: IO Settings
-loadDefaultSettings = do
-  token <- getEnv "BOT_TOKEN"
-  pure $ Settings{botName = "floss bot", botToken = token}
-
-setBotState :: Settings -> BotState
-setBotState botSettings = BotState{botSettings}
+  clientEnv <- defaultTelegramClientEnv (Token . botToken $ settings)
+  return BotState{botSettings = settings, ..}
