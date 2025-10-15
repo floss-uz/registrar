@@ -1,7 +1,6 @@
 module Registrar.Bot.Types where
 
 import Registrar.Prelude
-import Data.Text qualified as T
 
 data Action
   = Start
