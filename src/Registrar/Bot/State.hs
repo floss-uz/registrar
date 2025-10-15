@@ -1,12 +1,12 @@
 module Registrar.Bot.State where
 
+import Registrar.Prelude
+
 import Control.Concurrent.STM (TVar, newTVarIO)
 import Data.HashMap.Strict (HashMap)
-import Data.Text qualified as T
 import System.Environment (getEnv)
 
 import Data.HashMap.Strict qualified as HM
-import GHC.Generics (Generic)
 import Registrar.Bot.Types (Community)
 import Servant.Client (ClientEnv)
 import Telegram.Bot.API (Token (..), defaultTelegramClientEnv)
@@ -22,9 +22,9 @@ data BotState = BotState
   }
 
 data Settings = Settings
-  { botName :: T.Text
+  { botName :: Text
   -- ^ Telegram bot name. Used to parse @/command\@botname@.
-  , botToken :: T.Text
+  , botToken :: Text
   -- ^ Bot token.
   , debugEnabled :: Bool
   -- ^ Whether debug enabled or not

@@ -2,6 +2,8 @@ module Registrar
   ( runApp
   ) where
 
+import Registrar.Prelude
+
 import Registrar.API (runApi)
 import Registrar.Database
 

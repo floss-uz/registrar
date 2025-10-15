@@ -4,9 +4,10 @@ module Registrar.Bot
   , startBotEnv
   ) where
 
+import Registrar.Prelude
+
 import Data.Text qualified as T
 
-import Data.Aeson (decode)
 import Data.HashMap.Strict qualified as HM
 import Registrar.Bot.Handler
 import Registrar.Bot.Parse
