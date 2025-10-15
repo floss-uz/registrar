@@ -13,25 +13,21 @@ module Registrar.Database
   , importFromDataset
   ) where
 
-import Database.Persist.Migration (checkMigration, defaultSettings)
+import Registrar.Prelude
+
+import Database.Persist.Migration (defaultSettings)
 import Database.Persist.Migration.Postgres (runMigration)
-
-import Control.Monad.Reader (ReaderT, runReaderT)
-
-import Control.Monad.IO.Class (MonadIO (liftIO))
 import Registrar.Database.Migrations
 
 import Data.ByteString.Lazy qualified as B
-import Data.Kind (Constraint, Type)
 import Data.Pool (Pool, withResource)
 import Database.Persist.SqlBackend (SqlBackend)
-import GHC.Generics (Generic)
-
-import Data.Aeson hiding (Key)
-
-import Control.Monad (forM_)
+import Data.Aeson (eitherDecode)
 import Database.Esqueleto.Experimental hiding (runMigration)
 import Database.Persist.TH
+import Control.Monad.Reader (ReaderT)
+import Control.Monad (forM_)
+import Control.Monad.Trans.Reader (runReaderT)
 
 type PoolSql :: Constraint
 type PoolSql = (?pool :: Pool SqlBackend)
@@ -58,7 +54,7 @@ share
     manager String Maybe
     github String
     website String Maybe
-    deriving Eq 
+    deriving Eq
 |]
 
 type Community :: Type

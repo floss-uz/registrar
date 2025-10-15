@@ -1,7 +1,8 @@
 module Registrar.Bot.Reply where
 
+import Registrar.Prelude
+
 import Control.Concurrent.STM (readTVarIO)
-import Control.Monad.IO.Class (liftIO)
 import Data.Text qualified as Text
 import Registrar.Bot.State (BotState (..))
 import Registrar.Bot.Types (Community (..))

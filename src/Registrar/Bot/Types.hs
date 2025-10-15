@@ -1,8 +1,7 @@
 module Registrar.Bot.Types where
 
-import Data.Aeson
+import Registrar.Prelude
 import Data.Text qualified as T
-import GHC.Generics
 
 data Action
   = Start

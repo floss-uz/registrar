@@ -2,8 +2,9 @@ module Registrar.Bot.Webhook
   ( webhookHandler
   ) where
 
+import Registrar.Prelude
+
 import Control.Concurrent.STM (readTVarIO)
-import Control.Monad.IO.Class (MonadIO (liftIO))
 import Data.Functor (void)
 
 import Registrar.Bot qualified as BT

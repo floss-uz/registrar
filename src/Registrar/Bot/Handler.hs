@@ -1,5 +1,7 @@
 module Registrar.Bot.Handler where
 
+import Registrar.Prelude
+
 import GHC.Stack (HasCallStack)
 import Registrar.Bot.Reply
 import Registrar.Bot.State

@@ -1,5 +1,7 @@
 module Registrar.Bot.Parse where
 
+import Registrar.Prelude
+
 import Telegram.Bot.API
 import Telegram.Bot.Simple.UpdateParser
 
