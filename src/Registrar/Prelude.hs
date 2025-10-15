@@ -1,6 +1,6 @@
 module Registrar.Prelude
   ( Text
-  , module GHC.Generics
+  , Generic
   , module Data.Aeson
   , module Control.Monad.IO.Class
   , module Data.Kind
