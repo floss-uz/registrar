@@ -25,8 +25,6 @@
         hlib = pkgs.haskell.lib;
         hpkgs = pkgs.haskell.packages."ghc912".override {
           overrides = self: super: {
-            time = hlib.dontCheck (hlib.doJailbreak super.time);
-
             tasty-wai = hlib.dontCheck (hlib.doJailbreak super.tasty-wai);
             servant-client = hlib.dontCheck (hlib.doJailbreak super.servant-client);
             esqueleto = hlib.dontCheck (hlib.doJailbreak super.esqueleto);
