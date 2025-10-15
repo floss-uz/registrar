@@ -1,8 +1,7 @@
 module Registrar.Bot.Reply where
 
-import Data.Text (unlines)
+import Data.Text qualified as T
 import Registrar.Prelude
-import Prelude hiding (unlines)
 
 import Control.Concurrent.STM (readTVarIO)
 import Control.Monad.IO.Class (liftIO)
@@ -49,11 +48,11 @@ data ReplyAnswerType
 replyAnswer :: ReplyAnswerType -> Text
 replyAnswer = \case
   ReplyStart ->
-    unlines
+    T.unlines
       [ "Assalomu alaykum, hurmatli haker! "
       , "Floss jamiyati haqida hammasi shu yerda"
       ]
   ReplyShowGroups ->
-    unlines
+    T.unlines
       [ "Floss hamjamiyatiga doir barcha guruhlar shu yerda joylashgan" -- TODO: Need correct reply text content, use multiline strings
       ]
