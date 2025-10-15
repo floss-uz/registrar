@@ -1,6 +1,3 @@
-{-# LANGUAGE OverloadedRecordDot #-}
-{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
-
 module Registrar.Bot.Reply where
 
 import Control.Concurrent.STM (readTVarIO)
