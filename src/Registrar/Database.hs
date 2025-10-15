@@ -39,7 +39,7 @@ type PoolSql = (?pool :: Pool SqlBackend)
 -- | Read json file and insert to db json structure must satisfied to entity type.
 createDatasetFromFile
   :: forall a
-    ->(FromJSON a, PersistEntity a, PersistEntityBackend a ~ SqlBackend, SafeToInsert a)
+  ->(FromJSON a, PersistEntity a, PersistEntityBackend a ~ SqlBackend, SafeToInsert a)
   => FilePath
   -> SqlPersistT IO ()
 createDatasetFromFile tyA filePath = do

@@ -13,8 +13,17 @@ library
   exposed-modules:
     Registrar
     Registrar.API
+    Registrar.Bot
+    Registrar.Bot.Handler
+    Registrar.Bot.Parse
+    Registrar.Bot.Reply
+    Registrar.Bot.State
+    Registrar.Bot.Types
+    Registrar.Bot.Webhook
     Registrar.Database
     Registrar.Database.Migrations
+    Registrar.Prelude
+    Registrar.State
 
   build-depends:
     , aeson
@@ -23,6 +32,7 @@ library
     , bytestring
     , containers
     , esqueleto
+    , http-types
     , log-base
     , monad-logger
     , mtl
@@ -32,12 +42,16 @@ library
     , persistent-postgresql
     , resource-pool
     , servant
+    , servant-client
     , servant-server
     , stm
+    , telegram-bot-api
+    , telegram-bot-simple
     , text
     , transformers
     , unliftio
     , unordered-containers
+    , wai
     , warp
 
   hs-source-dirs:     src
