@@ -1,15 +1,15 @@
 module Registrar.Bot.Reply where
 
-import Prelude hiding (unlines)
 import Data.Text (unlines)
 import Registrar.Prelude
+import Prelude hiding (unlines)
 
 import Control.Concurrent.STM (readTVarIO)
+import Control.Monad.IO.Class (liftIO)
 import Registrar.Bot.State (BotState (..))
 import Registrar.Bot.Types (Community (..))
 import Telegram.Bot.API
 import Telegram.Bot.Simple
-import Control.Monad.IO.Class (liftIO)
 
 replyStart :: BotM ()
 replyStart = do

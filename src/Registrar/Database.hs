@@ -19,16 +19,16 @@ import Database.Persist.Migration (defaultSettings)
 import Database.Persist.Migration.Postgres (runMigration)
 import Registrar.Database.Migrations
 
+import Control.Monad (forM_)
+import Control.Monad.IO.Class (liftIO)
+import Control.Monad.Reader (ReaderT)
+import Control.Monad.Trans.Reader (runReaderT)
+import Data.Aeson (eitherDecode)
 import Data.ByteString.Lazy qualified as B
 import Data.Pool (Pool, withResource)
-import Database.Persist.SqlBackend (SqlBackend)
-import Data.Aeson (eitherDecode)
 import Database.Esqueleto.Experimental hiding (runMigration)
+import Database.Persist.SqlBackend (SqlBackend)
 import Database.Persist.TH
-import Control.Monad.Reader (ReaderT)
-import Control.Monad (forM_)
-import Control.Monad.Trans.Reader (runReaderT)
-import Control.Monad.IO.Class (liftIO)
 
 type PoolSql :: Constraint
 type PoolSql = (?pool :: Pool SqlBackend)

@@ -7,7 +7,7 @@ module Registrar.Prelude
   , ToJSON
   ) where
 
+import Data.Aeson (FromJSON, ToJSON)
+import Data.Kind (Constraint, Type)
 import Data.Text (Text)
 import GHC.Generics (Generic)
-import Data.Aeson (FromJSON, ToJSON)
-import Data.Kind (Type, Constraint)

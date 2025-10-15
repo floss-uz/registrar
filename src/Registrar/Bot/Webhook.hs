@@ -7,13 +7,13 @@ import Registrar.Prelude
 import Control.Concurrent.STM (readTVarIO)
 import Data.Functor (void)
 
+import Control.Monad.IO.Class (liftIO)
 import Registrar.Bot qualified as BT
 import Registrar.Bot.Handler (handleAction)
 import Registrar.Bot.State (BotState (..), Model (..))
 import Telegram.Bot.API
 import Telegram.Bot.Simple
 import Telegram.Bot.Simple.BotApp.Internal
-import Control.Monad.IO.Class (liftIO)
 
 webhookHandler :: BotState -> Update -> IO ()
 webhookHandler st update = do
