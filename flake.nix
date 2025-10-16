@@ -23,7 +23,17 @@
         inherit (self.checks.${system}) pre-commit-check;
         pkgs = import nixpkgs {localSystem = {inherit system;};};
         hlib = pkgs.haskell.lib;
-        hpkgs = pkgs.haskell.packages."ghc912".override {
+        hpkgs = pkgs.haskell.packages."ghc910".override {
+          overrides = self: super: {
+            tasty-wai = hlib.dontCheck (hlib.doJailbreak super.tasty-wai);
+            servant-client = hlib.dontCheck (hlib.doJailbreak super.servant-client);
+            esqueleto = hlib.dontCheck (hlib.doJailbreak super.esqueleto);
+            optparse-generic = hlib.dontCheck (hlib.doJailbreak super.optparse-generic);
+            postgresql-simple = hlib.dontCheck (hlib.doJailbreak super.postgresql-simple);
+            strict-containers = hlib.dontCheck (hlib.doJailbreak super.strict-containers);
+          };
+        };
+        hpkgs910 = pkgs.haskell.packages."ghc910".override {
           overrides = self: super: {
             tasty-wai = hlib.dontCheck (hlib.doJailbreak super.tasty-wai);
             servant-client = hlib.dontCheck (hlib.doJailbreak super.servant-client);
@@ -57,7 +67,7 @@
 
         packages.default = registrar;
 
-        devShells.default = pkgs.callPackage ./shell.nix {inherit pkgs hpkgs pre-commit-hooks pre-commit-check;};
+        devShells.default = pkgs.callPackage ./shell.nix {inherit pkgs hpkgs hpkgs910 pre-commit-hooks pre-commit-check;};
       }
     );
 }
