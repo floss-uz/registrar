@@ -57,7 +57,7 @@
 
         packages.default = registrar;
 
-        devShells.default = pkgs.callPackage ./shell.nix {inherit pkgs hpkgs hpkgs910 pre-commit-hooks pre-commit-check;};
+        devShells.default = pkgs.callPackage ./shell.nix {inherit pkgs hpkgs pre-commit-hooks pre-commit-check;};
       }
     );
 }

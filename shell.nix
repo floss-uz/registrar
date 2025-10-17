@@ -8,7 +8,6 @@
   in
     import nixpkgs {overlays = [];},
   hpkgs,
-  hpkgs910,
   pre-commit-check,
   ...
 }:
