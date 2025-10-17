@@ -24,6 +24,7 @@ createCommunities =
     { name = "communities"
     , schema =
         [ Column "id" SqlInt32 [NotNull, AutoIncrement]
+        , Column "name" SqlString [NotNull]
         , Column "established" SqlString [NotNull]
         , Column "mission" SqlString [NotNull]
         , Column "chat" SqlString []
