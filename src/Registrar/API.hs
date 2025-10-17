@@ -5,8 +5,8 @@ module Registrar.API (runApi) where
 
 import Registrar.Prelude
 
-import Registrar.Database (Community, PoolSql)
 import Registrar.Database qualified as DB
+import Registrar.Types (Community, PoolSql)
 
 import Registrar.Bot.Webhook qualified as BotAPI
 

@@ -1,23 +1,17 @@
-{-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE RequiredTypeArguments #-}
-{-# LANGUAGE TemplateHaskell #-}
-{-# LANGUAGE TypeFamilies #-}
-{-# LANGUAGE UndecidableInstances #-}
 
 module Registrar.Database
   ( migrateDb
   , communityList
-  , Community (..)
-  , CommunityId (..)
-  , PoolSql (..)
   , importFromDataset
   ) where
 
-import Registrar.Prelude
+import Registrar.Prelude (FromJSON)
+import Registrar.Types (Community, PoolSql)
 
 import Database.Persist.Migration (defaultSettings)
 import Database.Persist.Migration.Postgres (runMigration)
-import Registrar.Database.Migrations
+import Registrar.Database.Migrations (allMigrations)
 
 import Control.Monad (forM_)
 import Control.Monad.IO.Class (liftIO)
@@ -28,10 +22,6 @@ import Data.ByteString.Lazy qualified as B
 import Data.Pool (Pool, withResource)
 import Database.Esqueleto.Experimental hiding (runMigration)
 import Database.Persist.SqlBackend (SqlBackend)
-import Database.Persist.TH
-
-type PoolSql :: Constraint
-type PoolSql = (?pool :: Pool SqlBackend)
 
 -- | Read json file and insert to db json structure must satisfied to entity type.
 createDatasetFromFile
@@ -44,27 +34,6 @@ createDatasetFromFile tyA filePath = do
   case eitherDecode @[tyA] bytes of
     Left err -> liftIO $ pure ()
     Right (records :: [tyA]) -> forM_ records insert_
-
-share
-  [mkPersist sqlSettings{mpsPrefixFields = False}]
-  [persistLowerCase|
-  Community sql=communities
-    established String
-    mission String
-    chat String Maybe
-    manager String Maybe
-    github String
-    website String Maybe
-    deriving Eq
-|]
-
-type Community :: Type
-type CommunityId :: Type
-
-deriving stock instance Show Community
-deriving stock instance Generic Community
-deriving anyclass instance ToJSON Community
-deriving anyclass instance FromJSON Community
 
 -- | Connection pool using for sql database operations
 withPool :: (?pool :: Pool s) => ReaderT s IO r -> IO r

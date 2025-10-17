@@ -24,6 +24,7 @@ library
     Registrar.Database.Migrations
     Registrar.Prelude
     Registrar.State
+    Registrar.Types
 
   build-depends:
     , aeson
