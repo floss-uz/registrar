@@ -36,6 +36,7 @@ runApp = do
   pool <- runNoLoggingT $ createPostgresqlPool op.database op.databasePoolSize
   let ?pool = pool
   migrateDb
-  importFromDataset op.datasetFolder
-  st <- newBotState Settings{botName = "floss bot", botToken = T.pack op.botToken, debugEnabled = True}
+  -- importFromDataset op.datasetFolder
+  cm <- communityList
+  st <- newBotState Settings{botName = "floss bot", botToken = T.pack op.botToken, debugEnabled = True} cm
   WP.run op.port $ runApi st
