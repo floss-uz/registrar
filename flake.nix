@@ -33,16 +33,6 @@
             strict-containers = hlib.dontCheck (hlib.doJailbreak super.strict-containers);
           };
         };
-        hpkgs910 = pkgs.haskell.packages."ghc910".override {
-          overrides = self: super: {
-            tasty-wai = hlib.dontCheck (hlib.doJailbreak super.tasty-wai);
-            servant-client = hlib.dontCheck (hlib.doJailbreak super.servant-client);
-            esqueleto = hlib.dontCheck (hlib.doJailbreak super.esqueleto);
-            optparse-generic = hlib.dontCheck (hlib.doJailbreak super.optparse-generic);
-            postgresql-simple = hlib.dontCheck (hlib.doJailbreak super.postgresql-simple);
-            strict-containers = hlib.dontCheck (hlib.doJailbreak super.strict-containers);
-          };
-        };
 
         registrar = pkgs.haskell.lib.overrideCabal (hpkgs.callCabal2nix "registrar" ./. {}) (old: {
           doCheck = true;
