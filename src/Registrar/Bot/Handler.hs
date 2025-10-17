@@ -2,6 +2,8 @@ module Registrar.Bot.Handler where
 
 import Registrar.Prelude
 
+import Control.Concurrent.STM (readTVarIO)
+import Control.Monad.IO.Class (MonadIO (..))
 import GHC.Stack (HasCallStack)
 import Registrar.Bot.Reply
 import Registrar.Bot.State
@@ -14,4 +16,5 @@ handleAction Start model =
     replyStart
 handleAction Group model =
   model <# do
-    replyCommunities model
+    c <- liftIO $ readTVarIO model.communities
+    replyCommunities c

@@ -7,7 +7,7 @@ import Data.HashMap.Strict (HashMap)
 import System.Environment (getEnv)
 
 import Data.HashMap.Strict qualified as HM
-import Registrar.Bot.Types (Community)
+import Registrar.Types (Community)
 import Servant.Client (ClientEnv)
 import Telegram.Bot.API (Token (..), defaultTelegramClientEnv)
 
@@ -31,8 +31,8 @@ data Settings = Settings
   }
   deriving (Generic, Show)
 
-newBotState :: Settings -> IO BotState
-newBotState settings = do
-  communities <- newTVarIO []
+newBotState :: Settings -> [Community] -> IO BotState
+newBotState settings cm = do
+  communities <- newTVarIO cm
   clientEnv <- defaultTelegramClientEnv (Token . botToken $ settings)
   return BotState{botSettings = settings, ..}
