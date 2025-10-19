@@ -1,9 +1,18 @@
 module Registrar.Bot.Common where
 
 import Data.Text qualified as T
-import Registrar.Prelude (Text)
+import Registrar.Prelude (Text, Type)
 import Telegram.Bot.API
 
+type MentionMessage :: Type
+data MentionMessage = MkMentionMessage
+  { mOffset :: Int
+  , mLength :: Int
+  , mText :: Text
+  }
+  deriving (Show)
+
+mkMentionMsg :: MentionMessage -> Maybe User -> MessageEntity
 mkMentionMsg msg@MkMentionMessage{..} (Just user) =
   MessageEntity
     { messageEntityType = MessageEntityMention
@@ -15,19 +24,13 @@ mkMentionMsg msg@MkMentionMessage{..} (Just user) =
     , messageEntityCustomEmojiId = Nothing
     }
 
+mentionName :: Maybe User -> Text
 mentionName (Just User{userUsername}) =
   -- FIXME: configure to empty username cases
   let mentionUserName = case userUsername of
         Just u -> "@" <> u
         Nothing -> ""
    in mentionUserName
-
-data MentionMessage = MkMentionMessage
-  { mOffset :: Int
-  , mLength :: Int
-  , mText :: Text
-  }
-  deriving (Show)
 
 buildMentionMsg :: Text -> Text -> MentionMessage
 buildMentionMsg msg uname =
