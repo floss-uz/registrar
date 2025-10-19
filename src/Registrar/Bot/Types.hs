@@ -1,6 +1,7 @@
 module Registrar.Bot.Types where
 
 import Registrar.Prelude
+import Telegram.Bot.API
 
 data Action
   = Start
@@ -8,4 +9,5 @@ data Action
   | Help
   | Group
   | Useful
-  deriving (Show, Read)
+  | JoinMember ChatId MessageId
+  deriving (Show)

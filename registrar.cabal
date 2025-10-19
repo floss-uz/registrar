@@ -15,6 +15,7 @@ library
     Registrar.API
     Registrar.Bot
     Registrar.Bot.Handler
+    Registrar.Bot.Message
     Registrar.Bot.Parse
     Registrar.Bot.Reply
     Registrar.Bot.State
@@ -22,6 +23,7 @@ library
     Registrar.Bot.Webhook
     Registrar.Database
     Registrar.Database.Migrations
+    Registrar.Orphans
     Registrar.Prelude
     Registrar.State
     Registrar.Types
@@ -42,6 +44,7 @@ library
     , persistent-migration
     , persistent-postgresql
     , resource-pool
+    , safe-exceptions
     , servant
     , servant-client
     , servant-server
