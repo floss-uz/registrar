@@ -21,8 +21,9 @@ data BotState = BotState
   { botSettings :: !Settings
   -- ^ Bot settings
   , clientEnv :: ClientEnv
-  , requestLock :: MVar ()
   -- ^ Botenv
+  , requestLock :: MVar ()
+  -- ^ For locking before using clientEnv
   , communities :: TVar [Community]
   }
 
