@@ -26,24 +26,6 @@ handleAction Group model =
     replyCommunities c
 handleAction (JoinMember u chid mid) model =
   model <# do
-    liftIO $ print (chid, mid)
-    let msg = greetToNewcomers u $ SomeChatId chid
-    rs <- call model $ sendMessage msg
-    liftIO $ print rs
+    let msg = mentionMessageRequest u (SomeChatId chid) $ T.pack "Hi @username!"
+    void $ call model $ sendMessage msg
     void $ call model $ deleteMessage chid mid
-
-greetToNewcomers :: Maybe User -> SomeChatId -> SendMessageRequest
-greetToNewcomers = mkRmsg
- where
-  mkRmsg u chid =
-    let
-      mName = mentionName u
-      mMessage = buildMentionMsg msgTxt mName
-     in
-      (defSendMessage chid mMessage.mText)
-        { sendMessageMessageThreadId = Nothing -- FIXME: Need threadid of chat
-        , sendMessageText = mMessage.mText
-        , sendMessageChatId = chid
-        , sendMessageEntities = Just [mkMentionMsg mMessage u]
-        }
-  msgTxt = T.pack "Hi @username!"
