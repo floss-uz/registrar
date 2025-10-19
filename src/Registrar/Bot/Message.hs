@@ -5,8 +5,6 @@ module Registrar.Bot.Message (MessageFrom (..), parseMsgSource) where
 
 import Registrar.Orphans
 
-import Data.Coerce (coerce)
-
 import Data.Maybe (fromMaybe, isJust)
 import Registrar.Prelude (Type)
 import Telegram.Bot.API
