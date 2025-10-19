@@ -27,6 +27,7 @@ mkMentionMsg msg@MkMentionMessage{..} (Just user) =
 mentionName :: Maybe User -> Text
 mentionName (Just User{userUsername}) =
   -- FIXME: configure to empty username cases
+  -- Reference: https://core.telegram.org/api/mentions
   let mentionUserName = case userUsername of
         Just u -> "@" <> u
         Nothing -> ""
