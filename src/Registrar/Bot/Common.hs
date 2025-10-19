@@ -16,6 +16,7 @@ mkMentionMsg msg@MkMentionMessage{..} (Just user) =
     }
 
 mentionName (Just User{userUsername}) =
+  -- FIXME: configure to empty username cases
   let mentionUserName = case userUsername of
         Just u -> "@" <> u
         Nothing -> ""
