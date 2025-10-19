@@ -28,7 +28,7 @@ handleAction (JoinMember u chid mid) model =
   model <# do
     liftIO $ print (chid, mid)
     let msg = greetToNewcomers u $ SomeChatId chid
-    rs <- call model $ sendMessage $ msg
+    rs <- call model $ sendMessage msg
     liftIO $ print rs
     void $ call model $ deleteMessage chid mid
 
