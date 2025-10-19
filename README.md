@@ -1,4 +1,4 @@
-# Regulator Bot
+# Registrar
 
 A Telegram bot written in Haskell for managing FLOSS-UZ (Free/Libre and Open Source Software Uzbekistan) communities.
 
@@ -20,7 +20,7 @@ This is FLOSS community Telegram bot that serves as a community management tool 
 
 ### Commands
 
-- `/rules`
+- `/rules` -
 Redirects users to the community standards and guidelines at [std.floss.uz](https://std.floss.uz)
 
 - `/group` -
