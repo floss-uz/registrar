@@ -51,3 +51,16 @@ buildMentionMsg msg uname =
       Nothing -> defMtxt{mLength = 0, mOffset = 0}
  where
   replaceName = T.replace (T.pack "@username")
+
+mentionMessageRequest :: Maybe User -> SomeChatId -> Text -> SendMessageRequest
+mentionMessageRequest u chid msg =
+  let
+    mName = mentionName u
+    mMessage = buildMentionMsg msg mName
+   in
+    (defSendMessage chid mMessage.mText)
+      { sendMessageMessageThreadId = Nothing -- FIXME: Need threadid of chat
+      , sendMessageText = mMessage.mText
+      , sendMessageChatId = chid
+      , sendMessageEntities = Just [mkMentionMsg mMessage u]
+      }
