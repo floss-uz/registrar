@@ -9,5 +9,5 @@ data Action
   | Help
   | Group
   | Useful
-  | JoinMember ChatId MessageId
+  | JoinMember (Maybe User) ChatId MessageId
   deriving (Show)

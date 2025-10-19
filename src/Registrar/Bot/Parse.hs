@@ -39,4 +39,4 @@ handleGroupMessage chatId msg@Message{..} =
   let
     isJoinMsg = isJust messageNewChatMembers
    in
-    if isJoinMsg then Just $ JoinMember chatId messageMessageId else Nothing
+    if isJoinMsg then Just $ JoinMember messageFrom chatId messageMessageId else Nothing

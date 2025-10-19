@@ -14,6 +14,7 @@ library
     Registrar
     Registrar.API
     Registrar.Bot
+    Registrar.Bot.Common
     Registrar.Bot.Handler
     Registrar.Bot.Message
     Registrar.Bot.Parse
