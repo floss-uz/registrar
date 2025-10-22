@@ -59,6 +59,54 @@ Floss registry server should implement these endpoints for further integrations 
 Ap
 > There might be hint to arguments or parameters in form of "<" ">" showing what kind of params a command can accept. If there is "?" before param, this means it is optional.
 
+### Types
+
+```rust
+struct Community {
+  name: String,                //-- unique
+  website: Url,                // either website or telegram
+  github: String,              // username
+  telegram: String,            // username
+  chair: Member,               // representative of
+  moderators: Vec<Member>,     // also moderates ...
+}
+
+enum Status {
+  Active,                      // is actively maintaining
+  Suspended,                   // temporarily stopped activities
+  Banned,                      // permenantly banned from
+}
+
+struct Member {
+  username: String,            //-- unique, optionally oidc synced
+  full_name: String,           // optionally oidc synced
+  email: Url,                  // oidc synced
+  status: Status,              // oidc synced
+  blog: Url,                   // let it be website or telegram
+  github: String,              // username
+  telegram: String,            // username
+  mastodon: String,            // @username@instance
+  matrix: String,
+  chair: Option<Community>,
+  moderator: Vec<Community>,
+}
+
+struct Ban {
+  user: Member,                // who
+  reason: String,              // why
+  expire: DateTime,            // until
+  communities: Vec<Community>, // from
+  status: Status,              // as
+}
+```
+
+### Endpoints
+
+- /communities - list of `Community`'ies.
+- /communities/name - a `Community`.
+- /admins - list of `Member`'s.
+- /admins/username - an `Member`.
+- /bans - list of `Member` and reasons why they are banned via `Ban`.
 
 ## Development
 
