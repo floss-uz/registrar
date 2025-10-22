@@ -1,39 +1,64 @@
 # Registrar
 
-A Telegram bot written in Haskell for managing FLOSS-UZ (Free/Libre and Open Source Software Uzbekistan) communities.
+Registrar application focussed managing FLOSS-UZ (Free/Libre and Open Source Software Uzbekistan) communities. 
 
 ## About
 
-This is FLOSS community Telegram bot that serves as a community management tool for FLOSS-UZ Telegram groups, providing automated moderation, information resources, and member assistance. Built with Haskell and Cabal, it uses Nix for reproducible builds and deployment.
+This is FLOSS community Telegram bot that serves as a community management tool for FLOSS-UZ Telegram groups, providing automated moderation, information resources, and member assistance. Built with Haskell, it uses Nix for reproducible builds and deployment.
 
 ### Key Capabilities
+
 - Automated community moderation
 - Resource sharing for community members
 - Cross-community coordination
 - Newcomer onboarding
+- Synchronize contribution processes and share process information.
+- Establishing a single point of connection in the Floss network
 
 ## Features
 
+> [!WARNING]
+> The document is a mere draft whether how the project should shape up to and is subjected to changes. This is not definitive document.
+
+## Telegram Bot
+
+Bot should implement these features within Floss standards to become a viable assistant and helper for every member of the community.
+
+### Inline
+
+Bot should be able to lookup for standards (rfcs) via inline search and share in a form of summarized text with link to [std.floss.uz].
+
 ### Automated Triggers
+
 - **Welcome Messages**: Automatically greets new members joining the community
 - **Channel User Protection**: Automatically removes messages from channel users to prevent spam
 
 ### Commands
 
-- `/rules` -
-Redirects users to the community standards and guidelines at [std.floss.uz](https://std.floss.uz)
+> There might be hint to arguments or parameters in form of "<" ">" showing what kind of params a command can accept. If there is "?" before param, this means it is optional.
 
-- `/group` -
-Displays a list of FLOSS-UZ rust-related communities available on Telegram
+- `/help` - Recursive text message to introduce all available commands, including a button to activate demo inline.
+- `/warn <reply>` - community's telegram bot assistant should already include this functionality, but communitiy's version of assistant will only be helpful in terms of navigation throughout community's super group chat without leaving it. However, there might happen discussions which might belong to other community and in such cases, floss'es assistant must help users navigate throughout community by:
+  - only admins of current chat + floss wise admins must be able to access this command.
+  - forward the message to the community where it belongs to.
+  - deleting the offtopic message that doesn't belong to the community.
+  - give a warning to the user with a link to community where the message has been forwarded to.
+- `/community` - message with inline chat that has some information with links to other communities.
+- `/about` - message to introduce some introductory information about bot itself with a link to its source code.
+- `/members <?id>` - search through floss.uz membership its members and retain some information about them.
+- `/auth` -> via web app - connect telegram account with floss.uz id.
+- `/report <reply>` - report user or malicious activi ty within community (prefer floss.id over telegram if possible).
+- `/publish <link>` - publish a github PR calling for possible contributors
+- `/contribute <?id>` - list published PRs
+- `/guide <? repo>` - link or either helpful guide how to contribute (can be automated by adding coc.md lookup).
+- `/rules` - Redirects users to the community standards and guidelines at [std.floss.uz](https://std.floss.uz)
 
-- `/roadmap` -
-Provides a learning roadmap for newcomers to the community
+## Server
 
-- `/useful` -
-Shares curated useful resources and links for community members
+Floss registry server should implement these endpoints for further integrations + free use.
+Ap
+> There might be hint to arguments or parameters in form of "<" ">" showing what kind of params a command can accept. If there is "?" before param, this means it is optional.
 
-- `/warn` -
-Issues a warning to users for off-topic content. This warning system works cross-community, not just for specific topics, helping maintain consistent standards across all FLOSS-UZ groups.
 
 ## Development
 
