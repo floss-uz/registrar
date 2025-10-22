@@ -17,6 +17,7 @@
     nixpkgs,
     flake-utils,
     pre-commit-hooks,
+    ...
   }:
     flake-utils.lib.eachDefaultSystem (
       system: let
@@ -59,5 +60,8 @@
 
         devShells.default = pkgs.callPackage ./shell.nix {inherit pkgs hpkgs pre-commit-hooks pre-commit-check;};
       }
-    );
+    )
+    // {
+      hydraJobs = {inherit (self) packages;};
+    };
 }
