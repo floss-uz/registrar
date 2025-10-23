@@ -62,8 +62,5 @@
 
         devShells.default = pkgs.callPackage ./shell.nix {inherit pkgs hpkgs pre-commit-hooks pre-commit-check;};
       }
-    )
-    // {
-      hydraJobs = {inherit (self.packages.x86_64-linux) default;};
-    };
+    );
 }
