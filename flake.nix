@@ -37,13 +37,6 @@
             strict-containers = hlib.dontCheck (hlib.doJailbreak super.strict-containers);
           };
         };
-
-        registrar = pkgs.haskell.lib.overrideCabal (hpkgs.callCabal2nix "registrar" ./. {}) (old: {
-          doCheck = true;
-          doHaddock = false;
-          enableLibraryProfiling = false;
-          enableExecutableProfiling = false;
-        });
       in {
         # Tests and suites for this repo
         checks = {
@@ -59,7 +52,12 @@
           };
         };
 
-        packages.default = registrar;
+        packages.default = pkgs.haskell.lib.overrideCabal (hpkgs.callCabal2nix "registrar" ./. {}) (old: {
+          doCheck = true;
+          doHaddock = false;
+          enableLibraryProfiling = false;
+          enableExecutableProfiling = false;
+        });
 
         devShells.default = pkgs.callPackage ./shell.nix {inherit pkgs hpkgs pre-commit-hooks pre-commit-check;};
       }
