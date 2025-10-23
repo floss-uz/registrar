@@ -25,7 +25,8 @@
     flake-utils.lib.eachDefaultSystem (
       system: let
         inherit (self.checks.${system}) pre-commit-check;
-        pkgs = import nixpkgs {localSystem = {inherit system;};};
+        # pkgs = import nixpkgs {localSystem = {inherit system;};};
+        pkgs = nixpkgs.legacyPackages.${system};
         hlib = pkgs.haskell.lib;
         hpkgs = pkgs.haskell.packages."ghc910".override {
           overrides = self: super: {
