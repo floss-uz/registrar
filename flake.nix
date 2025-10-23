@@ -1,5 +1,8 @@
 {
   description = "registrar";
+  nixConfig = {
+    allow-import-from-derivation = true;
+  };
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -24,7 +27,7 @@
         inherit (self.checks.${system}) pre-commit-check;
         pkgs = import nixpkgs {localSystem = {inherit system;};};
         hlib = pkgs.haskell.lib;
-        hpkgs = pkgs.haskell.packages."ghc912".override {
+        hpkgs = pkgs.haskell.packages."ghc910".override {
           overrides = self: super: {
             tasty-wai = hlib.dontCheck (hlib.doJailbreak super.tasty-wai);
             servant-client = hlib.dontCheck (hlib.doJailbreak super.servant-client);
@@ -62,6 +65,6 @@
       }
     )
     // {
-      hydraJobs = {inherit (self.packages.x86_64-linux) default;};
+      hydraJobs = {inherit (self.packages.x86_64-linux);};
     };
 }
