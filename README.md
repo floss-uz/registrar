@@ -1,10 +1,12 @@
 # Registrar
 
-Registrar application focussed managing FLOSS-UZ (Free/Libre and Open Source Software Uzbekistan) communities. 
+**Registrar** is the central platform of **FLOSS-UZ**, built in Haskell and powered by Nix.  
+It manages and connects all aspects of the FLOSS-UZ community — projects, members, and resources — through a unified, extensible system.
 
 ## About
 
-This is FLOSS community Telegram bot that serves as a community management tool for FLOSS-UZ Telegram groups, providing automated moderation, information resources, and member assistance. Built with Haskell, it uses Nix for reproducible builds and deployment.
+Registrar serves as the backbone of FLOSS-UZ’s digital infrastructure.  
+It provides structured data, automation, and integration capabilities for open-source communities, enabling transparent and sustainable coordination across platforms.
 
 ### Key Capabilities
 

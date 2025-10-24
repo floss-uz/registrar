@@ -1,5 +1,8 @@
 {
   description = "registrar";
+  nixConfig = {
+    allow-import-from-derivation = true;
+  };
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -17,13 +20,15 @@
     nixpkgs,
     flake-utils,
     pre-commit-hooks,
+    ...
   }:
     flake-utils.lib.eachDefaultSystem (
       system: let
         inherit (self.checks.${system}) pre-commit-check;
-        pkgs = import nixpkgs {localSystem = {inherit system;};};
+        # pkgs = import nixpkgs {localSystem = {inherit system;};};
+        pkgs = nixpkgs.legacyPackages.${system};
         hlib = pkgs.haskell.lib;
-        hpkgs = pkgs.haskell.packages."ghc912".override {
+        hpkgs = pkgs.haskell.packages."ghc910".override {
           overrides = self: super: {
             tasty-wai = hlib.dontCheck (hlib.doJailbreak super.tasty-wai);
             servant-client = hlib.dontCheck (hlib.doJailbreak super.servant-client);
@@ -33,13 +38,6 @@
             strict-containers = hlib.dontCheck (hlib.doJailbreak super.strict-containers);
           };
         };
-
-        registrar = pkgs.haskell.lib.overrideCabal (hpkgs.callCabal2nix "registrar" ./. {}) (old: {
-          doCheck = true;
-          doHaddock = false;
-          enableLibraryProfiling = false;
-          enableExecutableProfiling = false;
-        });
       in {
         # Tests and suites for this repo
         checks = {
@@ -55,7 +53,12 @@
           };
         };
 
-        packages.default = registrar;
+        packages.default = pkgs.haskell.lib.overrideCabal (hpkgs.callCabal2nix "registrar" ./. {}) (old: {
+          doCheck = true;
+          doHaddock = false;
+          enableLibraryProfiling = false;
+          enableExecutableProfiling = false;
+        });
 
         devShells.default = pkgs.callPackage ./shell.nix {inherit pkgs hpkgs pre-commit-hooks pre-commit-check;};
       }
