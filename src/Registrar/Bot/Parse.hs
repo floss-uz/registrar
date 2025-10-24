@@ -15,7 +15,7 @@ import Registrar.Bot.Types
 updateToAction :: Settings -> Update -> Maybe Action
 updateToAction settings@Settings{..} update
   | isCommand "start" update = handleStart settings update
-  | isCommand "group" update = handleGroup settings update
+  | isCommand "community" update = handleGroup settings update
   | otherwise = handleMessage settings update
  where
   isCommand cmd = isJust . parseUpdate (commandWithBotName botName cmd)
