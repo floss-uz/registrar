@@ -24,6 +24,7 @@ library
     Registrar.Bot.State
     Registrar.Bot.Types
     Registrar.Bot.Webhook
+    Registrar.ClientTypes
     Registrar.Database
     Registrar.Database.Migrations
     Registrar.Orphans
@@ -42,6 +43,7 @@ library
     , cryptohash-sha256
     , esqueleto
     , http-types
+    , lens
     , log-base
     , monad-logger
     , mtl
