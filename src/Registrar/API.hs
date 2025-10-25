@@ -23,11 +23,10 @@ import Servant.API
 import Servant.API.Generic
 import Servant.Server.Generic (AsServerT, genericServeT)
 
-import Registrar.Bot.State (BotState (..), Model (..))
+import Registrar.Bot.State (BotState (..), Model (..), Settings (..))
+import Registrar.ClientTypes
 import Telegram.Bot.API
 import UnliftIO (MonadIO (..))
-
-import Registrar.Bot.State (Settings (..))
 
 type API :: Type -> Type
 data API route = MkAPI
