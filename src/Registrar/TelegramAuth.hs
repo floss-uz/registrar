@@ -14,16 +14,9 @@ import Control.Concurrent.STM (TVar, readTVarIO)
 import Data.Aeson (ToJSON)
 import Data.Maybe (fromMaybe, isJust)
 import Debug.Trace (trace)
+import Registrar.ClientTypes
 import Registrar.Prelude (Generic, Text, Type)
 import Registrar.Types (TelegramAuth (..))
-
-type AuthResp :: Type
-data AuthResp = MkAuthResp
-  { success :: !Bool
-  }
-  deriving stock (Generic, Show)
-
-deriving anyclass instance ToJSON AuthResp
 
 class B16DecRes a where b16DecRes :: a -> BS.ByteString
 instance B16DecRes (Either String BS.ByteString) where
