@@ -16,6 +16,7 @@ updateToAction :: Settings -> Update -> Maybe Action
 updateToAction settings@Settings{..} update
   | isCommand "start" update = handleStart
   | isCommand "help" update = handleHelp
+  | isCommand "about" update = handleAbout
   | isCommand "community" update = handleGroup
   | otherwise = handleMessage settings update
  where
@@ -26,6 +27,9 @@ handleStart = Just Start
 
 handleHelp :: Maybe Action
 handleHelp = Just Help
+
+handleAbout :: Maybe Action
+handleAbout = Just About
 
 handleGroup :: Maybe Action
 handleGroup = Just Group
