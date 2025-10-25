@@ -10,6 +10,8 @@ build-type:      Simple
 extra-doc-files: CHANGELOG.md
 
 library
+  -- allow-newer: openapi3
+
   exposed-modules:
     Registrar
     Registrar.API
@@ -43,6 +45,7 @@ library
     , log-base
     , monad-logger
     , mtl
+    , openapi3
     , optparse-generic
     , persistent
     , persistent-migration
@@ -51,6 +54,7 @@ library
     , safe-exceptions
     , servant
     , servant-client
+    , servant-openapi3
     , servant-server
     , stm
     , telegram-bot-api
