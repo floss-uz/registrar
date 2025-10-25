@@ -20,14 +20,14 @@ updateToAction settings@Settings{..} update
  where
   isCommand cmd = isJust . parseUpdate (commandWithBotName botName cmd)
 
-handleStart :: Settings -> Update -> Maybe Action
-handleStart _ Update{..} = Just Start
+handleStart :: Maybe Action
+handleStart = Just Start
 
-handleHelp :: Settings -> Update -> Maybe Action
-handleHelp _ Update{..} = Just Help
+handleHelp :: Maybe Action
+handleHelp = Just Help
 
-handleGroup :: Settings -> Update -> Maybe Action
-handleGroup _ Update{..} = Just Group
+handleGroup :: Maybe Action
+handleGroup = Just Group
 
 handleMessage :: Settings -> Update -> Maybe Action
 handleMessage st@Settings{..} u@Update{..}
