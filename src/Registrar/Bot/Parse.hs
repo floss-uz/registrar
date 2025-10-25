@@ -14,20 +14,21 @@ import Registrar.Bot.Types
 
 updateToAction :: Settings -> Update -> Maybe Action
 updateToAction settings@Settings{..} update
-  | isCommand "start" update = handleStart settings update
-  | isCommand "community" update = handleGroup settings update
+  | isCommand "start" update = handleStart
+  | isCommand "help" update = handleHelp
+  | isCommand "community" update = handleGroup
   | otherwise = handleMessage settings update
  where
   isCommand cmd = isJust . parseUpdate (commandWithBotName botName cmd)
 
-handleStart :: Settings -> Update -> Maybe Action
-handleStart _ Update{..} = Just Start
+handleStart :: Maybe Action
+handleStart = Just Start
 
-handleHelp :: Settings -> Update -> Maybe Action
-handleHelp _ Update{..} = Just Help
+handleHelp :: Maybe Action
+handleHelp = Just Help
 
-handleGroup :: Settings -> Update -> Maybe Action
-handleGroup _ Update{..} = Just Group
+handleGroup :: Maybe Action
+handleGroup = Just Group
 
 handleMessage :: Settings -> Update -> Maybe Action
 handleMessage st@Settings{..} u@Update{..}
