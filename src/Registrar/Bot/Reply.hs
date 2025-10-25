@@ -27,7 +27,7 @@ replyHelp = do
   reply replyMsg
  where
   replyMsg =
-    (toReplyMessage $ replyAnswer ReplyHelp)
+    toReplyMessage $ replyAnswer ReplyHelp
 
 replyCommunities :: [Community] -> BotM ()
 replyCommunities c = do
