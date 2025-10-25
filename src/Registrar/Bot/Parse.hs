@@ -15,7 +15,7 @@ import Registrar.Bot.Types
 updateToAction :: Settings -> Update -> Maybe Action
 updateToAction settings@Settings{..} update
   | isCommand "start" update = handleStart
-  | isCommand "help" update = handlehelp
+  | isCommand "help" update = handleHelp
   | isCommand "community" update = handleGroup
   | otherwise = handleMessage settings update
  where
