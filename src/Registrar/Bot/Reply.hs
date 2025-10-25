@@ -22,6 +22,13 @@ replyStart = do
       { replyMessageReplyMarkup = Just $ SomeInlineKeyboardMarkup keyboard
       }
 
+replyHelp :: BotM ()
+replyHelp = do
+  reply replyMsg
+ where
+  replyMsg =
+    (toReplyMessage $ replyAnswer ReplyHelp)
+
 replyCommunities :: [Community] -> BotM ()
 replyCommunities c = do
   reply $ replyMsg c
@@ -40,6 +47,7 @@ replyCommunities c = do
 data ReplyAnswerType
   = ReplyStart
   | ReplyShowGroups
+  | ReplyHelp
 
 replyAnswer :: ReplyAnswerType -> Text
 replyAnswer = \case
@@ -51,4 +59,15 @@ replyAnswer = \case
   ReplyShowGroups ->
     T.unlines
       [ "Floss hamjamiyatiga doir barcha guruhlar shu yerda joylashgan" -- TODO: Need correct reply text content, use multiline strings
+      ]
+  ReplyHelp ->
+    T.unlines
+      [ "📚 *Yordam bo'limi*"
+      , ""
+      , "*Asosiy buyruqlar:*"
+      , "/start - Botni ishga tushirish"
+      , "/group - Floss jamiyatining barcha guruhlari ro'yxati"
+      , "/help - Ushbu yordam xabarini ko'rish"
+      , ""
+      , "Floss jamiyati - bu ochiq kodli dasturiy ta'minot va texnologiyalar bilan shug'ullanuvchi dasturchilar hamjamiyati."
       ]

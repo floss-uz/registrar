@@ -20,6 +20,9 @@ handleAction :: (HasCallStack) => Action -> Model -> Eff Action Model
 handleAction Start model =
   model <# do
     replyStart
+handleAction Help model =
+  model <# do
+    replyHelp
 handleAction Group model =
   model <# do
     c <- liftIO $ readTVarIO model.communities
