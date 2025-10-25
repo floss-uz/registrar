@@ -22,6 +22,13 @@ replyStart = do
       { replyMessageReplyMarkup = Just $ SomeInlineKeyboardMarkup keyboard
       }
 
+replyHelp :: BotM ()
+replyHelp = do
+  reply replyMsg
+ where
+  replyMsg =
+    toReplyMessage $ replyAnswer ReplyHelp
+
 replyCommunities :: [Community] -> BotM ()
 replyCommunities c = do
   reply $ replyMsg c
@@ -40,6 +47,7 @@ replyCommunities c = do
 data ReplyAnswerType
   = ReplyStart
   | ReplyShowGroups
+  | ReplyHelp
 
 replyAnswer :: ReplyAnswerType -> Text
 replyAnswer = \case
@@ -51,4 +59,28 @@ replyAnswer = \case
   ReplyShowGroups ->
     T.unlines
       [ "Floss hamjamiyatiga doir barcha guruhlar shu yerda joylashgan" -- TODO: Need correct reply text content, use multiline strings
+      ]
+  ReplyHelp ->
+    T.unlines
+      [ "📚 *Buyruqlar ro'yxati:*"
+      , ""
+      , "👤 *Asosiy:*"
+      , "/start - Botni boshlash"
+      , "/help - Yordam"
+      , "/about - Bot haqida ma'lumot"
+      , "/rules - Qoidalar (std.floss.uz)"
+      , ""
+      , "👥 *Jamiyat:*"
+      , "/community - Hamjamiyatlar ro'yxati"
+      , "/members <?id> - A'zolarni qidirish"
+      , "/auth - Telegram ni floss.uz bilan bog'lash"
+      , ""
+      , "🛠 *Hissa qo'shish:*"
+      , "/publish <link> - GitHub PR e'lon qilish"
+      , "/contribute <?id> - E'lon qilingan PRlar"
+      , "/guide <?repo> - Hissa qo'shish bo'yicha qo'llanma"
+      , ""
+      , "⚠️ *Moderatsiya (adminlar uchun):*"
+      , "/warn <reply> - Xabarni tegishli guruhga yo'naltirish"
+      , "/report <reply> - Shikoyat yuborish"
       ]
