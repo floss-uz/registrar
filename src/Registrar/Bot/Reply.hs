@@ -29,6 +29,13 @@ replyHelp = do
   replyMsg =
     toReplyMessage $ replyAnswer ReplyHelp
 
+replyAbout :: BotM ()
+replyAbout = do
+  reply replyMsg
+ where
+  replyMsg =
+    toReplyMessage $ replyAnswer ReplyAbout
+
 replyCommunities :: [Community] -> BotM ()
 replyCommunities c = do
   reply $ replyMsg c
@@ -48,6 +55,7 @@ data ReplyAnswerType
   = ReplyStart
   | ReplyShowGroups
   | ReplyHelp
+  | ReplyAbout
 
 replyAnswer :: ReplyAnswerType -> Text
 replyAnswer = \case
@@ -83,4 +91,18 @@ replyAnswer = \case
       , "⚠️ *Moderatsiya (adminlar uchun):*"
       , "/warn <reply> - Xabarni tegishli guruhga yo'naltirish"
       , "/report <reply> - Shikoyat yuborish"
+      ]
+  ReplyAbout ->
+    T.unlines
+      [ "👋 Assalomu alaykum! Men Registrar botman."
+      , ""
+      , "Men FLOSS-UZ hamjamiyatining markaziy platformasi bo'lib, loyihalar, a'zolar va resurslarni boshqaraman."
+      , ""
+      , "✨ Asosiy vazifalarim:"
+      , "• Hamjamiyatni avtomatik moderatsiya qilish"
+      , "• Resurslarni ulashishda yordam berish"
+      , "• Hamjamiyatlar o'rtasida aloqa o'rnatish"
+      , "• Yangi a'zolarni qabul qilish"
+      , ""
+      , "💡 Batafsil ma'lumot: /help"
       ]

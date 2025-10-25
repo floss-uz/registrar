@@ -23,6 +23,9 @@ handleAction Start model =
 handleAction Help model =
   model <# do
     replyHelp
+handleAction About model =
+  model <# do
+    replyAbout
 handleAction Group model =
   model <# do
     c <- liftIO $ readTVarIO model.communities
