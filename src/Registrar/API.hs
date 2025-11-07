@@ -28,43 +28,23 @@ import Registrar.ClientTypes
 import Telegram.Bot.API
 import UnliftIO (MonadIO (..))
 
+import Registrar.API.Community
+import Registrar.API.OAuth
+
 type API :: Type -> Type
 data API route = MkAPI
   { communities :: route :- "communities" :> NamedRoutes CommunityRoutes
   , webhook :: route :- "webhook" :> ReqBody '[JSON] Update :> Post '[JSON] ()
-  , auth :: route :- "auth" :> NamedRoutes AuthRoutes
+  , auth :: route :- "auth" :> NamedRoutes OAuthRoutes
   }
   deriving stock (Generic)
-
-type CommunityRoutes :: Type -> Type
-data CommunityRoutes route = MkCommunityRoutes
-  { _communities :: route :- Get '[JSON] [Community]
-  }
-  deriving stock (Generic)
-
-data AuthRoutes route = MkAuthRoutes
-  { _telegram :: route :- "telegram" :> ReqBody '[JSON] TelegramAuth :> Post '[JSON] AuthResp
-  }
-  deriving stock (Generic)
-
-communityHandlers :: (PoolSql) => CommunityRoutes (AsServerT IO)
-communityHandlers =
-  MkCommunityRoutes
-    { _communities = DB.communityList
-    }
-
-authHandlers :: (PoolSql) => BotState -> AuthRoutes (AsServerT IO)
-authHandlers st@BotState{botSettings} =
-  MkAuthRoutes
-    { _telegram = verifyAuth botSettings.botToken
-    }
 
 apiHandler :: (PoolSql) => BotState -> API (AsServerT IO)
 apiHandler st =
   MkAPI
     { communities = communityHandlers
     , webhook = BotAPI.webhookHandler st
-    , auth = authHandlers st
+    , auth = oAuthHandlers st.botSettings
     }
 
 runApi :: (PoolSql) => BotState -> Application
