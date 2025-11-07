@@ -62,7 +62,5 @@ authToMap ta =
     Just v -> Map.insert k v m
     Nothing -> m
 
-verifyAuth :: Text -> TelegramAuth -> IO AuthResp
-verifyAuth tk ta = do
-  let v = verify (T.unpack tk) $ authToMap ta
-  pure $ MkAuthResp v
+verifyAuth :: Text -> TelegramAuth -> AuthResp
+verifyAuth tk ta = MkAuthResp $ verify (T.unpack tk) $ authToMap ta

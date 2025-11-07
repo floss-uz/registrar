@@ -17,8 +17,9 @@ import Servant (Application)
 import Servant.API
 
 import Registrar.ClientTypes
-import Servant.Server.Generic (AsServerT)
-import UnliftIO (MonadIO (..))
+import Servant
+import Servant.Server.Generic (AsServer, AsServerT)
+import UnliftIO (MonadIO (..), readTVar)
 
 type OAuthRoutes :: Type -> Type
 data OAuthRoutes route = MkOauthRoutes
@@ -26,8 +27,12 @@ data OAuthRoutes route = MkOauthRoutes
   }
   deriving stock (Generic)
 
-oAuthHandlers :: (PoolSql) => Settings -> OAuthRoutes (AsServerT IO)
+oAuthHandlers :: (PoolSql) => Settings -> OAuthRoutes AsServer
 oAuthHandlers st@Settings{botToken} =
   MkOauthRoutes
-    { _telegram = verifyAuth botToken
+    { _telegram = teelgramOauth botToken
     }
+
+teelgramOauth :: (PoolSql) => Text -> TelegramAuth -> Handler AuthResp
+teelgramOauth tk au = do
+  return $ verifyAuth tk au
