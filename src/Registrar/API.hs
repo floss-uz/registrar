@@ -49,9 +49,6 @@ data API route = MkAPI
   }
   deriving stock (Generic)
 
-apiProxy :: Proxy (ToServantApi API)
-apiProxy = Proxy
-
 data ApiServer route = MkApiServer
   { api :: route :- NamedRoutes API
   , webhook :: route :- "webhook" :> ReqBody '[JSON] Update :> Post '[JSON] ()
@@ -63,6 +60,9 @@ data ApiServer route = MkApiServer
 -------------------------------- Openapi config ----------------------------
 
 type SwaggerAPI = SwaggerSchemaUI "swagger-ui" "swagger.json"
+
+apiProxy :: Proxy (ToServantApi API)
+apiProxy = Proxy
 
 swaggerDocs :: OpenApi
 swaggerDocs =
@@ -80,12 +80,14 @@ swaggerDocs =
              & version .~ "1.0"
          )
 
+botHandler :: (PoolSql) => BotState -> Update -> Handler ()
+botHandler st up = liftIO $ BotAPI.webhookHandler st up
+
 apiHandlers :: (PoolSql) => BotState -> API AsServer
 apiHandlers st =
   MkAPI
     { communities = communityHandlers
-    , -- , webhook = BotAPI.webhookHandler st
-      auth = oAuthHandlers st.botSettings
+    , auth = oAuthHandlers st.botSettings
     }
 
 mkServer :: (PoolSql) => BotState -> ApiServer AsServer
@@ -93,9 +95,8 @@ mkServer st =
   MkApiServer
     { api = apiHandlers st
     , docs = swaggerSchemaUIServer swaggerDocs
-    , webhook = undefined
-    , -- webhook = liftIO $ BotAPI.webhookHandler st
-      docsJson = pure swaggerDocs
+    , webhook = botHandler st
+    , docsJson = pure swaggerDocs
     }
 
 runApi :: (PoolSql) => BotState -> Application
