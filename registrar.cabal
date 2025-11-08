@@ -17,6 +17,7 @@ library
     Registrar.API
     Registrar.API.Community
     Registrar.API.OAuth
+    Registrar.API.Util
     Registrar.Bot
     Registrar.Bot.Common
     Registrar.Bot.Handler
@@ -44,6 +45,7 @@ library
     , containers
     , cryptohash-sha256
     , esqueleto
+    , http-media
     , http-types
     , lens
     , log-base
@@ -60,6 +62,8 @@ library
     , servant-client
     , servant-openapi3
     , servant-server
+    , servant-swagger-ui
+    , servant-swagger-ui-core
     , stm
     , telegram-bot-api
     , telegram-bot-simple

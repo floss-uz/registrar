@@ -16,7 +16,7 @@ import Registrar.Types (Community, PoolSql, TelegramAuth (..))
 
 import Servant.API
 
-import Servant.Server.Generic (AsServerT)
+import Servant.Server.Generic (AsServer, AsServerT)
 import UnliftIO (MonadIO (..))
 
 type CommunityRoutes :: Type -> Type
@@ -25,8 +25,8 @@ data CommunityRoutes route = MkCommunityRoutes
   }
   deriving stock (Generic)
 
-communityHandlers :: (PoolSql) => CommunityRoutes (AsServerT IO)
+communityHandlers :: (PoolSql) => CommunityRoutes AsServer
 communityHandlers =
   MkCommunityRoutes
-    { _communities = DB.communityList
+    { _communities = liftIO DB.communityList -- FIXME: implement handler
     }

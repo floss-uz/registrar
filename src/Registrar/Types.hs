@@ -14,6 +14,7 @@ module Registrar.Types
 import Registrar.Prelude
 
 import Data.Data (Proxy (..))
+import Data.OpenApi (ToSchema)
 import Data.Pool (Pool)
 import Database.Esqueleto.Experimental
 import Database.Persist.SqlBackend (SqlBackend)
@@ -44,6 +45,7 @@ deriving stock instance Show Community
 deriving stock instance Generic Community
 deriving anyclass instance ToJSON Community
 deriving anyclass instance FromJSON Community
+deriving anyclass instance ToSchema Community
 
 type TelegramAuth :: Type
 data TelegramAuth = MkTelegramAuth
@@ -60,3 +62,4 @@ deriving stock instance Show TelegramAuth
 deriving stock instance Generic TelegramAuth
 deriving anyclass instance ToJSON TelegramAuth
 deriving anyclass instance FromJSON TelegramAuth
+deriving anyclass instance ToSchema TelegramAuth
