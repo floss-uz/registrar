@@ -45,7 +45,7 @@ bodyParserErrorFormatter' _ _ errMsg =
     }
 
 ----------------------- Throwing api errors ------------------
-
+type UVerbT :: [Type] -> (Type -> Type) -> Type -> Type
 newtype UVerbT xs m a = UVerbT {unUVerbT :: ExceptT (Union xs) m a}
   deriving newtype (Functor, Applicative, Monad, MonadTrans, MonadIO)
 
@@ -72,6 +72,7 @@ type ResponseError :: Type -> Type
 data ResponseError a = MKResponseError {error :: a}
   deriving (Eq, Show, Generic)
 
+type BadRequest :: Type
 data BadRequest = MkBadRequest {message :: Text}
   deriving (Eq, Show, Generic)
 
