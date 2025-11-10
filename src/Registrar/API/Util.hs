@@ -17,6 +17,7 @@ import Network.HTTP.Types qualified as HTTP
 import Registrar.Prelude (FromJSON, Generic, ToJSON, Type)
 import Registrar.Types (PoolSql)
 import Servant
+import Servant.API.UVerb.Union
 import Servant.Server
 
 ----------------------- Error formatting ------------------
@@ -85,5 +86,6 @@ instance HasStatus BadRequest where
 -- | This combinator runs 'throwUVerb' and respond BadRequest with 400 status code
 throwBadRequest = undefined -- TODO: Need implement
 
+-- | This combinator runs 'return' with response and status code 201
 respond201 :: (Monad m) => a -> m (WithStatus 201 a)
 respond201 a = do return $ WithStatus @201 a
