@@ -17,7 +17,18 @@ import Registrar.Prelude
 import Data.Aeson (ToJSON (toJSON))
 import Data.Aeson.Types (Value (Object), (.=))
 import Data.Data (Proxy (..), Typeable)
-import Data.OpenApi (HasExample (example), HasSchema (schema), NamedSchema (..), Referenced (..), Schema, SchemaOptions (fieldLabelModifier), ToSchema (declareNamedSchema), declareSchema, defaultSchemaOptions, genericDeclareNamedSchema)
+import Data.OpenApi
+  ( HasExample (example)
+  , HasSchema (schema)
+  , NamedSchema (..)
+  , Referenced (..)
+  , Schema
+  , SchemaOptions (fieldLabelModifier)
+  , ToSchema (declareNamedSchema)
+  , declareSchema
+  , defaultSchemaOptions
+  , genericDeclareNamedSchema
+  )
 import Data.OpenApi.Internal.ParamSchema (ToParamSchema)
 import Data.Pool (Pool)
 import Data.Typeable (Typeable)
