@@ -45,6 +45,8 @@ pkgs.stdenv.mkDerivation {
     pkgs.libz
     pkgs.libpq.pg_config
     pkgs.pkg-config
+    pkgs.xz
+
     pre-commit-check.enabledPackages
   ];
   # Things to run before entering devShell
