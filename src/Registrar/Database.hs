@@ -4,16 +4,18 @@ module Registrar.Database
   ( migrateDb
   , communityList
   , importFromDataset
+  , communitiesWithId
   ) where
 
 import Registrar.Prelude (FromJSON)
-import Registrar.Types (Community, PoolSql)
+import Registrar.Types (Community, PoolSql, WrapId (..))
 
 import Database.Persist.Migration (defaultSettings)
 import Database.Persist.Migration.Postgres (runMigration)
 import Registrar.Database.Migrations (allMigrations)
 
 import Control.Monad (forM_)
+import Control.Monad.IO.Class
 import Control.Monad.IO.Class (liftIO)
 import Control.Monad.Reader (ReaderT)
 import Control.Monad.Trans.Reader (runReaderT)
@@ -39,6 +41,10 @@ createDatasetFromFile tyA filePath = do
 withPool :: (?pool :: Pool s) => ReaderT s IO r -> IO r
 withPool = withResource ?pool . runReaderT
 
+-- | Wrap this function wraps entity to 'WrapId' type for responsing flat data
+wrapId :: Entity record -> WrapId record
+wrapId (Entity k v) = WrapId v k
+
 migrateDb :: (PoolSql) => IO ()
 migrateDb =
   withPool $ runMigration defaultSettings allMigrations
@@ -53,3 +59,10 @@ importFromDataset bp =
 
 communityList :: (PoolSql) => IO [Community]
 communityList = map entityVal <$> withPool (select $ from table)
+
+communitiesWithId :: (PoolSql, MonadIO m) => m [WrapId Community]
+communitiesWithId = liftIO $ map wrapId <$> withPool sc
+ where
+  sc = select $ do
+    t <- from (table @Community)
+    pure $ t
