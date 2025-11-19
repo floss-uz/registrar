@@ -15,6 +15,7 @@ import Database.Persist.Postgresql (createPostgresqlPool)
 import Network.Wai.Handler.Warp qualified as WP
 import Options.Generic
 import Registrar.Bot.State
+import Registrar.Database.Community qualified as CM
 
 type Options :: Type -> Type
 data Options w = Options
@@ -37,6 +38,6 @@ runApp = do
   let ?pool = pool
   migrateDb
   -- importFromDataset op.datasetFolder
-  cm <- communityList
+  cm <- CM.getAll
   st <- newBotState Settings{botName = "floss bot", botToken = T.pack op.botToken, debugEnabled = True} cm
   WP.run op.port $ runApi st
