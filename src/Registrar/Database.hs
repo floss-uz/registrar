@@ -2,12 +2,12 @@
 
 module Registrar.Database
   ( migrateDb
-  , communityList
+  , withPool
   , importFromDataset
   ) where
 
+import Registrar.Database.Types (Community, PoolSql)
 import Registrar.Prelude (FromJSON)
-import Registrar.Types (Community, PoolSql)
 
 import Database.Persist.Migration (defaultSettings)
 import Database.Persist.Migration.Postgres (runMigration)
@@ -50,6 +50,3 @@ importFromDataset bp =
         createDatasetFromFile (type Community) (bp <> "/communities.json")
     )
     ?pool
-
-communityList :: (PoolSql) => IO [Community]
-communityList = map entityVal <$> withPool (select $ from table)
