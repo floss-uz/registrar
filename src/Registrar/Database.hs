@@ -14,6 +14,7 @@ import Database.Persist.Migration.Postgres (runMigration)
 import Registrar.Database.Migrations (allMigrations)
 
 import Control.Monad (forM_)
+import Control.Monad.IO.Class
 import Control.Monad.IO.Class (liftIO)
 import Control.Monad.Reader (ReaderT)
 import Control.Monad.Trans.Reader (runReaderT)

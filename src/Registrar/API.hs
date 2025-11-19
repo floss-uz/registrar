@@ -36,6 +36,7 @@ import Registrar.API.OAuth
 import Control.Lens
 import Data.Text qualified as T
 import Registrar.API.Util
+import Registrar.Orphans
 import Servant
 import Servant.API.Generic
 import Servant.OpenApi

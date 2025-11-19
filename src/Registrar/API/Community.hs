@@ -18,6 +18,8 @@ import Registrar.Types
 import Registrar.Types (TelegramAuth (..))
 import Servant.API
 
+import Registrar.Orphans
+import Servant
 import Servant.Server.Generic (AsServer, AsServerT)
 import UnliftIO (MonadIO (..))
 
@@ -30,5 +32,10 @@ data CommunityRoutes route = MkCommunityRoutes
 communityHandlers :: (PoolSql) => CommunityRoutes AsServer
 communityHandlers =
   MkCommunityRoutes
-    { _communities = liftIO CM.getAll -- FIXME: implement handler
+    { _communities = communitiesHandler
     }
+
+communitiesHandler :: (PoolSql) => Handler [Community]
+communitiesHandler = do
+  u <- liftIO CM.getAll
+  pure u

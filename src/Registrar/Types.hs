@@ -13,13 +13,30 @@ module Registrar.Types
 import Registrar.Prelude
 import Registrar.Types.Community
 
-import Data.Data (Proxy (..))
-import Data.OpenApi (ToSchema)
+import Data.Aeson (ToJSON (toJSON))
+import Data.Aeson.Types (Value (Object), (.=))
+import Data.Data (Proxy (..), Typeable)
+import Data.OpenApi
+  ( HasExample (example)
+  , HasSchema (schema)
+  , NamedSchema (..)
+  , Referenced (..)
+  , Schema
+  , SchemaOptions (fieldLabelModifier)
+  , ToSchema (declareNamedSchema)
+  , declareSchema
+  , defaultSchemaOptions
+  , genericDeclareNamedSchema
+  )
+import Data.OpenApi.Internal.ParamSchema (ToParamSchema)
 import Data.Pool (Pool)
+import Data.Typeable (Typeable)
 import Database.Esqueleto.Experimental
 import Database.Persist.SqlBackend (SqlBackend)
 import Database.Persist.TH
 import GHC.Records (HasField (..))
+import Registrar.Orphans
+import Servant.OpenApi (HasOpenApi (toOpenApi))
 
 type TelegramAuth :: Type
 data TelegramAuth = MkTelegramAuth
