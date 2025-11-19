@@ -5,7 +5,7 @@ import Data.ByteString.UTF8 qualified as UTF8
 import Data.Text (Text)
 import Network.HTTP.Media.RenderHeader qualified as HTTPMedia
 import Network.HTTP.Types qualified as HTTP
-import Registrar.Types (PoolSql)
+import Registrar.Database.Types (PoolSql)
 import Servant
 import Servant.Server
 
