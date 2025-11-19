@@ -11,10 +11,11 @@ import Registrar.Prelude
 
 import Registrar.Database qualified as DB
 import Registrar.TelegramAuth
-import Registrar.Types (Community, PoolSql, TelegramAuth (..))
+import Registrar.Types (Community, TelegramAuth (..))
 
 import Data.ByteString.Lazy qualified as BL
 import Registrar.Bot.Webhook qualified as BotAPI
+import Registrar.Database.Types (PoolSql)
 
 import Data.Proxy (Proxy (..))
 
