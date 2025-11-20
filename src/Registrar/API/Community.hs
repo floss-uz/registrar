@@ -10,10 +10,12 @@ module Registrar.API.Community (CommunityRoutes (..), communityHandlers) where
 import Registrar.Prelude
 
 import Registrar.Database qualified as DB
+import Registrar.Database.Community qualified as CM
 
+import Registrar.Database.Types (PoolSql)
 import Registrar.TelegramAuth
-import Registrar.Types (Community, PoolSql, TelegramAuth (..), WrapId)
-
+import Registrar.Types
+import Registrar.Types (TelegramAuth (..))
 import Servant.API
 
 import Registrar.Orphans
@@ -23,7 +25,7 @@ import UnliftIO (MonadIO (..))
 
 type CommunityRoutes :: Type -> Type
 data CommunityRoutes route = MkCommunityRoutes
-  { _communities :: route :- Get '[JSON] [WrapId Community]
+  { _communities :: route :- Get '[JSON] [Community]
   }
   deriving stock (Generic)
 
@@ -33,7 +35,7 @@ communityHandlers =
     { _communities = communitiesHandler
     }
 
-communitiesHandler :: (PoolSql) => Handler [WrapId Community]
+communitiesHandler :: (PoolSql) => Handler [Community]
 communitiesHandler = do
-  u <- liftIO DB.communitiesWithId
+  u <- liftIO CM.getAll
   pure u

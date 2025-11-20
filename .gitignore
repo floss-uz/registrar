@@ -9,7 +9,7 @@ dist-newstyle
 
 .env
 
-data
+/data
 *~
 ~*
 /result
@@ -17,7 +17,6 @@ data
 
 _cache
 _site
-data
 target
 
 .pre-commit-config.yaml

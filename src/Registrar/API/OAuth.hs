@@ -9,8 +9,9 @@ module Registrar.API.OAuth (OAuthRoutes (..), oAuthHandlers) where
 
 import Registrar.Prelude
 
+import Registrar.Database.Types (PoolSql)
 import Registrar.TelegramAuth
-import Registrar.Types (Community, PoolSql, TelegramAuth (..))
+import Registrar.Types (Community, TelegramAuth (..))
 
 import Registrar.Bot.State
 import Servant (Application)

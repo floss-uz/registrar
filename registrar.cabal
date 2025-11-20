@@ -29,12 +29,15 @@ library
     Registrar.Bot.Webhook
     Registrar.ClientTypes
     Registrar.Database
+    Registrar.Database.Community
     Registrar.Database.Migrations
+    Registrar.Database.Types
     Registrar.Orphans
     Registrar.Prelude
     Registrar.State
     Registrar.TelegramAuth
     Registrar.Types
+    Registrar.Types.Community
 
   build-depends:
     , aeson

@@ -4,6 +4,8 @@
 
 module Registrar.API.Util where
 
+import Registrar.Prelude
+
 import Control.Monad.Except (ExceptT (..), MonadError (..))
 import Control.Monad.IO.Class (MonadIO (..))
 import Control.Monad.RWS (MonadTrans (..))
@@ -14,8 +16,7 @@ import Data.OpenApi (ToSchema)
 import Data.Text (Text)
 import Network.HTTP.Media.RenderHeader qualified as HTTPMedia
 import Network.HTTP.Types qualified as HTTP
-import Registrar.Prelude (FromJSON, Generic, ToJSON, Type)
-import Registrar.Types (PoolSql)
+import Registrar.Database.Types (PoolSql)
 import Servant
 import Servant.API.UVerb.Union
 import Servant.Server
