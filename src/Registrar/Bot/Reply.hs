@@ -4,6 +4,7 @@ import Data.Text qualified as T
 import Registrar.Prelude
 import Registrar.Types (Community (..))
 
+import Registrar.Bot.Types
 import Telegram.Bot.API
 import Telegram.Bot.Simple
 
@@ -106,3 +107,18 @@ replyAnswer = \case
       , ""
       , "💡 Batafsil ma'lumot: /help"
       ]
+
+replyCommunitiesCB :: [Community] -> BotM ()
+replyCommunitiesCB c = do
+  reply $ replyMsg c
+ where
+  mkButton cm = [actionButton cm.name (CommunityWarn cm.name)]
+  keyboard c =
+    InlineKeyboardMarkup
+      { inlineKeyboardMarkupInlineKeyboard =
+          mkButton <$> c
+      }
+  replyMsg c =
+    (toReplyMessage $ replyAnswer ReplyShowGroups)
+      { replyMessageReplyMarkup = Just $ SomeInlineKeyboardMarkup (keyboard c)
+      }

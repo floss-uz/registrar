@@ -14,6 +14,7 @@ import Registrar.Bot.Types
 import Telegram.Bot.API
 import Telegram.Bot.Simple.Eff
 
+import Data.Maybe (fromJust, isJust)
 import Data.Text qualified as T
 
 handleAction :: (HasCallStack) => Action -> Model -> Eff Action Model
@@ -35,3 +36,13 @@ handleAction (JoinMember u chid mid) model =
     let msg = mentionMessageRequest u (SomeChatId chid) $ T.pack "Hi @username!"
     void $ call model $ sendMessage msg
     void $ call model $ deleteMessage chid mid
+handleAction (Warn u) model =
+  model <# do
+    let rs = fromJust u.updateMessage
+    liftIO $ print $ messageFrom $ fromJust rs.messageReplyToMessage
+    c <- liftIO $ readTVarIO model.communities
+    replyCommunitiesCB c
+handleAction (ForwardCommunity txt) model =
+  model <# do
+    liftIO $ print $ txt
+    pure ()
