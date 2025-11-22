@@ -15,7 +15,7 @@ getOne :: (PoolSql) => Text -> IO (Maybe RT.Community)
 getOne communityName = do
   results <- withPool $ select $ do
     community <- from $ table @Community
-    where_ (community.name `like` val communityName)
+    where_ (community.name ==. val communityName)
     pure community
   pure $ fmap entityToType (listToMaybe results)
 
