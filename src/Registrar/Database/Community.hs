@@ -9,7 +9,7 @@ import Registrar.Prelude
 import Registrar.Types qualified as RT
 
 getAll :: (PoolSql) => IO [RT.Community]
-getAll = map entityToType <$> withPool (select $ from table)
+getAll = entityToType <$$> withPool (select $ from table)
 
 getOne :: (PoolSql) => Text -> IO (Maybe RT.Community)
 getOne communityName = do
