@@ -1,9 +1,11 @@
-module Registrar.Database.Community (getAll) where
+module Registrar.Database.Community (getAll, getOne) where
 
 import Database.Esqueleto.Experimental hiding (runMigration)
 import Registrar.Database
 import Registrar.Database.Types
 
+import Data.Maybe (listToMaybe)
+import Registrar.Prelude
 import Registrar.Types qualified as RT
 
 getAll :: (PoolSql) => IO [RT.Community]
