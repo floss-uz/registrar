@@ -7,6 +7,7 @@ module Registrar.Prelude
   , ToJSON
   , timeExpired
   , currentTimeSec
+  , (<$$>)
   ) where
 
 import Data.Aeson (FromJSON, ToJSON)
@@ -24,3 +25,8 @@ timeExpired cTime tTime expInterval =
 
 currentTimeSec :: IO Int
 currentTimeSec = round <$> getPOSIXTime
+
+(<$$>) :: (Functor f, Functor g) => (a -> b) -> f (g a) -> f (g b)
+(<$$>) = fmap . fmap
+
+infix 4 <$$>
