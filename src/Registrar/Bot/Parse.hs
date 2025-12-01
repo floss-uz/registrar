@@ -63,5 +63,5 @@ handleCallback :: Settings -> CallbackQuery -> Maybe Action
 handleCallback Settings{..} q@CallbackQuery{..} =
   let warnCommunity = readMaybe @CommunityActions =<< fmap T.unpack callbackQueryData
    in case warnCommunity of
-        Just (CommunityWarn txt) -> Just $ ForwardCommunity txt
+        Just (CommunityWarn sId txt) -> Just $ ForwardCommunity sId txt
         Nothing -> Nothing

@@ -34,10 +34,18 @@ deriving stock instance Show (Options Unwrapped)
 runApp :: IO ()
 runApp = do
   (op :: Options Unwrapped) <- unwrapRecord "Registrar application"
+
   pool <- runNoLoggingT $ createPostgresqlPool op.database op.databasePoolSize
   let ?pool = pool
   migrateDb
   -- importFromDataset op.datasetFolder
   cm <- CM.getAll
-  st <- newBotState Settings{botName = "floss bot", botToken = T.pack op.botToken, debugEnabled = True} cm
+  let botSettings =
+        Settings
+          { botName = "floss bot"
+          , botToken = T.pack op.botToken
+          , debugEnabled = True
+          , warnSetting = defaultWarnSetting
+          }
+  st <- newBotState botSettings cm
   WP.run op.port $ runApi st

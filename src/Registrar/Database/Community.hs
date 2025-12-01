@@ -4,6 +4,7 @@ import Database.Esqueleto.Experimental hiding (runMigration)
 import Registrar.Database
 import Registrar.Database.Types
 
+import Data.Maybe (fromMaybe)
 import Registrar.Types qualified as RT
 
 getAll :: (PoolSql) => IO [RT.Community]
@@ -16,8 +17,10 @@ entityToType (Entity k v) =
     , name = v.name
     , established = v.established
     , mission = v.mission
-    , chat = v.chat
+    , chat = cmChat
     , manager = v.manager
     , website = v.website
     , github = v.github
     }
+ where
+  cmChat = fromMaybe "" v.chat
