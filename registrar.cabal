@@ -48,7 +48,7 @@ library
     , containers
     , cryptohash-sha256
     , esqueleto
-    , generic-lens             ^>=2.3.0.0
+    , generic-lens
     , hashable
     , http-media
     , http-types
