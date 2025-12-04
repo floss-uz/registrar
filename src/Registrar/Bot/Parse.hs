@@ -11,6 +11,9 @@ import Data.Maybe
 import Registrar.Bot.Message
 import Registrar.Bot.State
 import Registrar.Bot.Types
+import Text.Read (readMaybe)
+
+import Data.Text qualified as T
 
 updateToAction :: Settings -> Update -> Maybe Action
 updateToAction settings@Settings{..} update
@@ -18,8 +21,11 @@ updateToAction settings@Settings{..} update
   | isCommand "help" update = handleHelp
   | isCommand "about" update = handleAbout
   | isCommand "community" update = handleGroup
+  | isCommand "warn" update = handleWarn settings update
+  | isCallback update = handleCallback settings =<< updateCallbackQuery update
   | otherwise = handleMessage settings update
  where
+  isCallback = isJust . updateCallbackQuery
   isCommand cmd = isJust . parseUpdate (commandWithBotName botName cmd)
 
 handleStart :: Maybe Action
@@ -48,3 +54,14 @@ handleGroupMessage chatId msg@Message{..} =
     isJoinMsg = isJust messageNewChatMembers
    in
     if isJoinMsg then Just $ JoinMember messageFrom chatId messageMessageId else Nothing
+
+handleWarn :: Settings -> Update -> Maybe Action
+handleWarn st updt =
+  Just $ Warn updt
+
+handleCallback :: Settings -> CallbackQuery -> Maybe Action
+handleCallback Settings{..} q@CallbackQuery{..} =
+  let warnCommunity = readMaybe @CommunityActions =<< fmap T.unpack callbackQueryData
+   in case warnCommunity of
+        Just (CommunityWarn sId txt) -> Just $ ForwardCommunity sId txt
+        Nothing -> Nothing

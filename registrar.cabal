@@ -48,6 +48,8 @@ library
     , containers
     , cryptohash-sha256
     , esqueleto
+    , generic-lens
+    , hashable
     , http-media
     , http-types
     , lens
@@ -71,7 +73,9 @@ library
     , telegram-bot-api
     , telegram-bot-simple
     , text
+    , time
     , transformers
+    , unicode-show
     , unliftio
     , unordered-containers
     , utf8-string

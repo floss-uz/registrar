@@ -4,20 +4,12 @@ import Database.Esqueleto.Experimental hiding (runMigration)
 import Registrar.Database
 import Registrar.Database.Types
 
-import Data.Maybe (listToMaybe)
+import Data.Maybe (fromMaybe, listToMaybe)
 import Registrar.Prelude
 import Registrar.Types qualified as RT
 
 getAll :: (PoolSql) => IO [RT.Community]
 getAll = entityToType <$$> withPool (select $ from table)
-
-getOne :: (PoolSql) => Text -> IO (Maybe RT.Community)
-getOne communityName = do
-  results <- withPool $ select $ do
-    community <- from $ table @Community
-    where_ (community.name `like` val communityName)
-    pure community
-  pure $ fmap entityToType (listToMaybe results)
 
 getOne :: (PoolSql) => Text -> IO (Maybe RT.Community)
 getOne communityName = do
@@ -34,8 +26,10 @@ entityToType (Entity k v) =
     , name = v.name
     , established = v.established
     , mission = v.mission
-    , chat = v.chat
+    , chat = cmChat
     , manager = v.manager
     , website = v.website
     , github = v.github
     }
+ where
+  cmChat = fromMaybe "" v.chat

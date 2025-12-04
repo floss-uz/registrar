@@ -9,7 +9,7 @@ data Community = MkCommunity
   , name :: !Text
   , established :: !Text
   , mission :: !Text
-  , chat :: !(Maybe Text)
+  , chat :: !Text
   , manager :: !(Maybe Text)
   , github :: !Text
   , website :: Maybe Text

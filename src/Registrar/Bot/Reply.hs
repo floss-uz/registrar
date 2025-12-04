@@ -1,11 +1,21 @@
+{-# LANGUAGE OverloadedLabels #-}
+
 module Registrar.Bot.Reply where
 
 import Data.Text qualified as T
 import Registrar.Prelude
 import Registrar.Types (Community (..))
 
+import Control.Lens ((&), (.~), (?~), (^?))
+import Control.Monad.IO.Class (MonadIO (..))
+import Data.Generics.Labels ()
+import Data.Maybe (fromMaybe)
+import Debug.Trace (trace)
+import Registrar.Bot.Common
+import Registrar.Bot.Types
 import Telegram.Bot.API
 import Telegram.Bot.Simple
+import Text.Show.Unicode
 
 replyStart :: BotM ()
 replyStart = do
@@ -56,6 +66,8 @@ data ReplyAnswerType
   | ReplyShowGroups
   | ReplyHelp
   | ReplyAbout
+  | ReplyRestrictUser UserInfo Text
+  | MoveSpamerToChat Text Text
 
 replyAnswer :: ReplyAnswerType -> Text
 replyAnswer = \case
@@ -106,3 +118,45 @@ replyAnswer = \case
       , ""
       , "💡 Batafsil ma'lumot: /help"
       ]
+  ReplyRestrictUser u t ->
+    T.concat
+      [ u.uLink
+      , " Vaqtinchalik bloklandi, blokdan ozod qilish sanasi: "
+      , t
+      ]
+  MoveSpamerToChat ch u ->
+    T.concat
+      [ u
+      , " xabaringiz ushbu hamjamiyat mavzusiga mos kelmaydi iltimos "
+      , T.cons '@' ch
+      , " ga hamjamiyatga o'tishingizni so'raymiz."
+      ]
+
+replyCommunitiesCB :: [Community] -> SpamerId -> SomeChatId -> SendMessageRequest
+replyCommunitiesCB c sId chatId = do
+  replyMessageToSendMessageRequest chatId $ replyMsg c
+ where
+  chatLink t = fromMaybe "" $ T.stripPrefix (T.pack "https://t.me/") t
+  mkButton cm = [actionButton cm.name (CommunityWarn sId $ chatLink cm.chat)]
+  keyboard c =
+    InlineKeyboardMarkup
+      { inlineKeyboardMarkupInlineKeyboard =
+          mkButton <$> c
+      }
+  replyMsg c =
+    (toReplyMessage $ replyAnswer ReplyShowGroups)
+      { replyMessageReplyMarkup = Just $ SomeInlineKeyboardMarkup (keyboard c)
+      }
+
+restrictionAttention :: ChatId -> User -> Text -> SendMessageRequest
+restrictionAttention chid u t =
+  let replyMsg = toReplyMessage ra
+      ra = replyAnswer $ ReplyRestrictUser (fromTelegramUser u) t
+      replyMsgHtml = replyMsg & #replyMessageParseMode ?~ HTML -- FIXME: move to common
+   in replyMessageToSendMessageRequest (SomeChatId chid) replyMsgHtml
+
+moveSpamerToChat :: ChatId -> Text -> Text -> SendMessageRequest
+moveSpamerToChat chid chat spamer =
+  let replyMsg = toReplyMessage $ replyAnswer $ MoveSpamerToChat chat spamer
+      replyMsgHtml = replyMsg & #replyMessageParseMode ?~ HTML -- FIXME: move to common
+   in replyMessageToSendMessageRequest (SomeChatId chid) replyMsgHtml

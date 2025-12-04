@@ -1,8 +1,14 @@
 module Registrar.Bot.Common where
 
+import Data.Coerce (coerce)
+import Data.Hashable (Hashable)
+import Data.Maybe (fromMaybe)
+import Data.Text (Text)
 import Data.Text qualified as T
+import Registrar.Orphans
 import Registrar.Prelude (Text, Type)
 import Telegram.Bot.API
+import Text.Show.Unicode
 
 type MentionMessage :: Type
 data MentionMessage = MkMentionMessage
@@ -64,3 +70,63 @@ mentionMessageRequest u chid msg =
       , sendMessageChatId = chid
       , sendMessageEntities = Just [mkMentionMsg mMessage u]
       }
+
+utrm :: Text -> Text
+utrm = (T.pack . ushow . T.unpack)
+
+makeName :: (a -> Text) -> (a -> Maybe Text) -> a -> Text
+makeName firstNameSelector lastNameSelector v =
+  T.concat [firstNameSelector v, maybe "" ("" <>) (lastNameSelector v)]
+
+getUserName :: User -> Text
+getUserName = makeName userFirstName userLastName
+
+getChatName :: Chat -> Text
+getChatName = makeName (fromMaybe "" . chatFirstName) chatLastName
+
+getChatFullInfoName :: ChatFullInfo -> Text
+getChatFullInfoName = makeName (fromMaybe "" . chatFullInfoFirstName) chatFullInfoLastName
+
+makeChatLink :: ChatFullInfo -> Text
+makeChatLink =
+  makeLink
+    "chat"
+    (coerce @_ @Integer . chatFullInfoId)
+    chatFullInfoUsername
+    getChatFullInfoName
+
+makeUserLink :: User -> Text
+makeUserLink = makeLink "user" (coerce @_ @Integer . userId) userUsername getUserName
+
+makeLink :: Text -> (a -> Integer) -> (a -> Maybe Text) -> (a -> Text) -> a -> Text
+makeLink entityType idSelector usernameSelector getName v = case usernameSelector v of
+  Nothing ->
+    T.concat
+      [ "<a href=\"tg://"
+      , entityType
+      , "?id="
+      , T.pack $ show (idSelector v)
+      , "\">"
+      , getName v
+      , "</a>"
+      ]
+  Just username -> T.cons '@' username
+
+restrictedUserPermissions :: ChatPermissions
+restrictedUserPermissions =
+  ChatPermissions
+    { chatPermissionsCanSendMessages = Nothing
+    , chatPermissionsCanSendAudios = Nothing
+    , chatPermissionsCanSendDocuments = Nothing
+    , chatPermissionsCanSendPhotos = Nothing
+    , chatPermissionsCanSendVideos = Nothing
+    , chatPermissionsCanSendVideoNotes = Nothing
+    , chatPermissionsCanSendVoiceNotes = Nothing
+    , chatPermissionsCanSendPolls = Nothing
+    , chatPermissionsCanSendOtherMessages = Nothing
+    , chatPermissionsCanAddWebPagePreviews = Nothing
+    , chatPermissionsCanChangeInfo = Nothing
+    , chatPermissionsCanInviteUsers = Nothing
+    , chatPermissionsCanPinMessages = Nothing
+    , chatPermissionsCanManageTopics = Nothing
+    }
