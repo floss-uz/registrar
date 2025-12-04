@@ -37,6 +37,7 @@ data BotState = BotState
 data WarnSetting = WarnSetting
   { userWarningInterval :: Int
   , userWarnLimit :: Int
+  , permanentBanDuration :: Int
   }
   deriving (Show)
 
@@ -51,7 +52,7 @@ data Settings = Settings
   }
   deriving (Generic, Show)
 
-defaultWarnSetting = WarnSetting 7200 3
+defaultWarnSetting = WarnSetting 7200 3 7200
 
 newBotState :: Settings -> [Community] -> IO BotState
 newBotState settings cm = do

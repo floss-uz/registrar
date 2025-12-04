@@ -53,8 +53,7 @@ handleAction (JoinMember u chid mid) model =
     void $ call model $ deleteMessage chid mid
 handleAction (Warn u) model =
   model <# do
-    let restrictionInterval = 120 -- FIXME: move to config
-        rs = fromJust u.updateMessage
+    let rs = fromJust u.updateMessage
         mf = fromJust $ messageFrom $ fromJust rs.messageReplyToMessage -- change to safe way
         spamerId = SpamerId mf.userId
         chatId = rs.messageChat.chatId
@@ -71,12 +70,11 @@ handleAction (Warn u) model =
 
     let restrictReq = (defRestrictChatMember (SomeChatId rs.messageChat.chatId) mf.userId) restrictedUserPermissions
     curTimeS <- liftIO $ currentTimeSec
-    void $ call model $ restrictChatMember $ restrictReq{restrictChatMemberUntilDate = Just $ curTimeS + restrictionInterval}
     case wr of
       (BanUser) -> do
         let restrictReq = (defRestrictChatMember (SomeChatId rs.messageChat.chatId) mf.userId) restrictedUserPermissions
         curTimeS <- liftIO $ currentTimeSec
-        void $ call model $ restrictChatMember $ restrictReq{restrictChatMemberUntilDate = Just $ curTimeS + restrictionInterval}
+        void $ call model $ restrictChatMember $ restrictReq{restrictChatMemberUntilDate = Just $ curTimeS + model.botSettings.warnSetting.permanentBanDuration}
         liftIO $ print "ban"
         let req = restrictionAttention rs.messageChat.chatId mf $ T.pack fTime
         void $ call model $ sendMessage req
