@@ -28,6 +28,7 @@ library
     Registrar.Bot.Types
     Registrar.Bot.Webhook
     Registrar.ClientTypes
+    Registrar.Config
     Registrar.Database
     Registrar.Database.Community
     Registrar.Database.Migrations
@@ -48,12 +49,14 @@ library
     , containers
     , cryptohash-sha256
     , esqueleto
+    , file-embed
     , generic-lens
     , hashable
     , http-media
     , http-types
     , lens
     , log-base
+    , markdown-unlit
     , monad-logger
     , mtl
     , openapi3
@@ -61,6 +64,7 @@ library
     , persistent
     , persistent-migration
     , persistent-postgresql
+    , raw-strings-qq
     , resource-pool
     , safe-exceptions
     , servant
@@ -74,6 +78,7 @@ library
     , telegram-bot-simple
     , text
     , time
+    , toml-parser
     , transformers
     , unicode-show
     , unliftio

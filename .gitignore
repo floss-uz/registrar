@@ -6,6 +6,7 @@ dist-newstyle
 *.ps
 *.eventlog
 *.eventlog.html
+config.toml
 
 .env
 
