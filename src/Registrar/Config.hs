@@ -7,11 +7,9 @@
 
 module Registrar.Config where
 
-import Data.FileEmbed (embedFile)
 import Data.Text (Text)
 import Data.Text.Encoding (decodeUtf8)
 import GHC.Generics (Generic)
-import Text.RawString.QQ (r)
 import Toml qualified
 import Toml.Schema (FromValue, ToTable, ToValue)
 import Toml.Schema.Generic (GenericTomlTable (..))
@@ -45,8 +43,5 @@ data WarnSetting = WarnSetting
   deriving (Eq, Show, Generic)
   deriving (ToTable, ToValue, FromValue) via GenericTomlTable WarnSetting
 
-configStr :: Text
-configStr = decodeUtf8 $(embedFile "config.toml")
-
 loadConfig :: Result String AppConfig
-loadConfig = Toml.decode configStr
+loadConfig = Toml.decode' $ decodeUtf8 . "config.toml"

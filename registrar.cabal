@@ -49,14 +49,12 @@ library
     , containers
     , cryptohash-sha256
     , esqueleto
-    , file-embed
     , generic-lens
     , hashable
     , http-media
     , http-types
     , lens
     , log-base
-    , markdown-unlit
     , monad-logger
     , mtl
     , openapi3
@@ -64,7 +62,6 @@ library
     , persistent
     , persistent-migration
     , persistent-postgresql
-    , raw-strings-qq
     , resource-pool
     , safe-exceptions
     , servant
