@@ -25,6 +25,7 @@ data Options w = Options
   , migrations :: !(w ::: Bool <?> "Run migrations" <!> "False" <#> "m")
   , datasetFolder :: !(w ::: FilePath <?> "Default dataset folder" <#> "f")
   , botToken :: !(w ::: String <?> "Telegram bot token" <#> "t")
+  , filePath :: !(w ::: String <?> "Config file path" <#> "f")
   }
   deriving stock (Generic)
 

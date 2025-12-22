@@ -7,6 +7,7 @@
 
 module Registrar.Config where
 
+import Data.ByteString qualified as BS
 import Data.Text (Text)
 import Data.Text.Encoding (decodeUtf8)
 import GHC.Generics (Generic)
@@ -43,5 +44,5 @@ data WarnSetting = WarnSetting
   deriving (Eq, Show, Generic)
   deriving (ToTable, ToValue, FromValue) via GenericTomlTable WarnSetting
 
-loadConfig :: Result String AppConfig
-loadConfig = Toml.decode' $ decodeUtf8 . "config.toml"
+loadConfig :: FilePath -> IO (Result Toml.DecodeError AppConfig)
+loadConfig filepath = Toml.decode' . decodeUtf8 <$> BS.readFile filepath
