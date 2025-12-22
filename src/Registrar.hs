@@ -15,7 +15,9 @@ import Database.Persist.Postgresql (createPostgresqlPool)
 import Network.Wai.Handler.Warp qualified as WP
 import Options.Generic
 import Registrar.Bot.State
+import Registrar.Config (loadConfig)
 import Registrar.Database.Community qualified as CM
+import Toml
 
 type Options :: Type -> Type
 data Options w = Options
@@ -25,7 +27,7 @@ data Options w = Options
   , migrations :: !(w ::: Bool <?> "Run migrations" <!> "False" <#> "m")
   , datasetFolder :: !(w ::: FilePath <?> "Default dataset folder" <#> "f")
   , botToken :: !(w ::: String <?> "Telegram bot token" <#> "t")
-  , filePath :: !(w ::: String <?> "Config file path" <#> "f")
+  , filePath :: !(w ::: String <?> "Config file path" <#> "c")
   }
   deriving stock (Generic)
 
@@ -35,6 +37,11 @@ deriving stock instance Show (Options Unwrapped)
 runApp :: IO ()
 runApp = do
   (op :: Options Unwrapped) <- unwrapRecord "Registrar application"
+
+  configResult <- loadConfig op.filePath
+  case configResult of
+    Success _ cfg -> print cfg
+    Failure errs -> putStrLn "Failed to load config"
 
   pool <- runNoLoggingT $ createPostgresqlPool op.database op.databasePoolSize
   let ?pool = pool
