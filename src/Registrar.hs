@@ -38,11 +38,6 @@ runApp :: IO ()
 runApp = do
   (op :: Options Unwrapped) <- unwrapRecord "Registrar application"
 
-  configResult <- loadConfig op.filePath
-  case configResult of
-    Success _ cfg -> print cfg
-    Failure errs -> putStrLn "Failed to load config"
-
   pool <- runNoLoggingT $ createPostgresqlPool op.database op.databasePoolSize
   let ?pool = pool
   migrateDb
