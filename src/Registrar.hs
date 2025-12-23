@@ -15,7 +15,9 @@ import Database.Persist.Postgresql (createPostgresqlPool)
 import Network.Wai.Handler.Warp qualified as WP
 import Options.Generic
 import Registrar.Bot.State
+import Registrar.Config (loadConfig)
 import Registrar.Database.Community qualified as CM
+import Toml
 
 type Options :: Type -> Type
 data Options w = Options
@@ -25,6 +27,7 @@ data Options w = Options
   , migrations :: !(w ::: Bool <?> "Run migrations" <!> "False" <#> "m")
   , datasetFolder :: !(w ::: FilePath <?> "Default dataset folder" <#> "f")
   , botToken :: !(w ::: String <?> "Telegram bot token" <#> "t")
+  , config :: !(w ::: String <?> "Config file path" <#> "c")
   }
   deriving stock (Generic)
 

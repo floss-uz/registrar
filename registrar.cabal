@@ -28,6 +28,7 @@ library
     Registrar.Bot.Types
     Registrar.Bot.Webhook
     Registrar.ClientTypes
+    Registrar.Config
     Registrar.Database
     Registrar.Database.Community
     Registrar.Database.Migrations
@@ -74,6 +75,7 @@ library
     , telegram-bot-simple
     , text
     , time
+    , toml-parser
     , transformers
     , unicode-show
     , unliftio
