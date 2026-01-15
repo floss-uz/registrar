@@ -31,9 +31,9 @@ data OAuthRoutes route = MkOauthRoutes
 oAuthHandlers :: (PoolSql) => Settings -> OAuthRoutes AsServer
 oAuthHandlers st@Settings{botToken} =
   MkOauthRoutes
-    { _telegram = teelgramOauth botToken
+    { _telegram = telegramOauth botToken
     }
 
-teelgramOauth :: (PoolSql) => Text -> TelegramAuth -> Handler AuthResp
-teelgramOauth tk au = do
+telegramOauth :: (PoolSql) => Text -> TelegramAuth -> Handler AuthResp
+telegramOauth tk au = do
   return $ verifyAuth tk au
