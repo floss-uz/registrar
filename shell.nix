@@ -27,6 +27,7 @@ pkgs.stdenv.mkDerivation {
   buildInputs = [
     hpkgs.cabal-install
     hpkgs.cabal-add
+    hpkgs.cabal-fmt
     hpkgs.haskell-language-server
     hpkgs.fourmolu
     hpkgs.hlint
